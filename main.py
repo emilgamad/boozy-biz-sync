@@ -5,12 +5,12 @@ from flask_cors import CORS
 
 import views
 
-app = Flask(__name__)
-CORS(app)
-api = Api(app)
+APP = Flask(__name__)
+CORS(APP)
+API = Api(APP)
 
 # Get (index)
-api.add_resource(views.Index, '/')
+API.add_resource(views.Index, '/api/v1')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    APP.run(host='0.0.0.0', port=8080, debug=True)
