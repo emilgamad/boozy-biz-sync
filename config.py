@@ -9,12 +9,23 @@ if PROJECT_NAME is None or "staging" in PROJECT_NAME:
         {"PASSWORD": "7ae645b889c0708b6747bb5dbd31e382"},
         {"SHARED_SECRET": "73d853860d4a6c52ff045d5226a2406e"},
         {"DOMAIN": "letsboozy-staging.myshopify.com/admin/api/2019-07/"}]
+
+    # Staging Values
+    MAKATI_HUB = 6956482671
+    QC_HUB = 7124451439
+    ALABANG_HUB = 15657533551
+
 else:
     MAIN_STORE = [
         {"API_KEY": "f3ec4f3a98c7f27aff8d470053d6242e"},
         {"PASSWORD": "171df07b59a4faba3a2575aadd0a1940"},
         {"SHARED_SECRET": "e48a122231e37ed46cff2ec1442e96fb"},
         {"DOMAIN": "letsboozy.myshopify.com/admin/api/2019-07/"}]
+
+    #Prod Values
+    MAKATI_HUB = 42445973
+    QC_HUB = 13981909067
+    ALABANG_HUB = 15035039819
 
 MAIN_STORE_DOMAIN = "https://{}:{}@{}".format(
     MAIN_STORE[0]['API_KEY'],
@@ -29,3 +40,15 @@ BIZ_STORE = [
 
 BIZ_STORE_DOMAIN = "https://{}:{}boozy-biz.myshopify.com/admin/api"\
     "/2019-07/".format(BIZ_STORE[0]['API_KEY'], BIZ_STORE[1]['PASSWORD'])
+
+FIREBASE_CONFIG = {
+    "apiKey": "AIzaSyAQbrpEylB7Q4U6qtVV6byuCHXRHVxtIUY",
+    "authDomain": "boozy-biz-sync-staging-848f4.firebaseapp.com",
+    "databaseURL": "https://boozy-biz-sync-staging-848f4.firebaseio.com",
+    "projectId": "boozy-biz-sync-staging-848f4",
+    "storageBucket": "",
+    "messagingSenderId": "796210140291",
+    "appId": "1:796210140291:web:29cec974f13901444e77b6"}
+
+FIREBASE_ADMIN = "emil.gamad@boozy.ph"
+FIREBASE_PASSWORD = "boozy-biz-sync-staging"
