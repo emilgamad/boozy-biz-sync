@@ -1,9 +1,9 @@
 """Config file for boozy-biz-sync"""
 import os
 
-PROJECT_NAME = os.getenv('GOOGLE_CLOUD_PROJECT')
+PROJECT_NAME = str(os.getenv('GOOGLE_CLOUD_PROJECT'))
 
-if PROJECT_NAME is None or "staging" in PROJECT_NAME:
+if "staging" in PROJECT_NAME:
     MAIN_STORE = [
         {"API_KEY": "8b2c2f515ff17743be71ae5b479297c9"},
         {"PASSWORD": "7ae645b889c0708b6747bb5dbd31e382"},
@@ -11,11 +11,12 @@ if PROJECT_NAME is None or "staging" in PROJECT_NAME:
         {"DOMAIN": "letsboozy-staging.myshopify.com/admin/api/2019-07/"}]
 
     # Staging Values
-    MAKATI_HUB = 6956482671
-    QC_HUB = 7124451439
-    ALABANG_HUB = 15657533551
+    locations_list = {
+        "MAIN_STORE_MAKATI_HUB" : 6956482671,
+        "MAIN_STORE_QC_HUB" : 7124451439,
+        "MAIN_STORE_ALABANG_HUB" : 15657533551}
 
-else:
+elif "boozy-biz-sync" in PROJECT_NAME or PROJECT_NAME == "None":
     MAIN_STORE = [
         {"API_KEY": "f3ec4f3a98c7f27aff8d470053d6242e"},
         {"PASSWORD": "171df07b59a4faba3a2575aadd0a1940"},
@@ -23,9 +24,10 @@ else:
         {"DOMAIN": "letsboozy.myshopify.com/admin/api/2019-07/"}]
 
     #Prod Values
-    MAKATI_HUB = 42445973
-    QC_HUB = 13981909067
-    ALABANG_HUB = 15035039819
+    locations_list = {
+        "MAIN_STORE_MAKATI_HUB" : 42445973,
+        "MAIN_STORE_QC_HUB" : 13981909067,
+        "MAIN_STORE_ALABANG_HUB" : 15035039819}
 
 MAIN_STORE_DOMAIN = "https://{}:{}@{}".format(
     MAIN_STORE[0]['API_KEY'],
@@ -40,6 +42,10 @@ BIZ_STORE = [
 
 BIZ_STORE_DOMAIN = "https://{}:{}boozy-biz.myshopify.com/admin/api"\
     "/2019-07/".format(BIZ_STORE[0]['API_KEY'], BIZ_STORE[1]['PASSWORD'])
+
+BIZ_STORE_MAKATI_HUB = 33229733968
+BIZ_STORE_QC_HUB = 13981909067
+BIZ_STORE_ALABANG_HUB = 33992802384
 
 FIREBASE_CONFIG = {
     "apiKey": "AIzaSyAQbrpEylB7Q4U6qtVV6byuCHXRHVxtIUY",
