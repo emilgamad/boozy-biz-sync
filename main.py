@@ -11,6 +11,7 @@ API = Api(APP)
 
 # Get (index)
 API.add_resource(views.Index, '/api/v1')
+#
 
 # POST Main Store Order Creation
 # API.add_resource(views.BizStoreOrderCreatedView, '/api/v1/order/biz')
