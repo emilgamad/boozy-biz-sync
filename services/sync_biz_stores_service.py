@@ -8,9 +8,9 @@ class SyncBizStoreService():
         self.sync_details = sync_details
 
     def run(self):
-        for variant in self.sync_details:
+        pass
+        # for variant in self.sync_details:
 
-            variant_title = self.sync_details['title']
 
             # variant_id = manager.biz_store_get_variant_id_by_title()
 

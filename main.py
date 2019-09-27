@@ -4,6 +4,7 @@ from flask_restful import Api
 from flask_cors import CORS
 import store
 import views
+from services.google_subscription_service import GoogleSubscriptionService
 
 APP = Flask(__name__)
 CORS(APP)
@@ -19,5 +20,5 @@ API.add_resource(views.Index, '/api/v1')
 API.add_resource(views.MainStoreOrderCreatedView, '/api/v1/order/main')
 
 if __name__ == '__main__':
-    # store.Store().start_sync_store_listener_service()
+    GoogleSubscriptionService().run()
     APP.run(host='0.0.0.0', port=8080, debug=True)

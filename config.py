@@ -58,3 +58,13 @@ FIREBASE_CONFIG = {
 
 FIREBASE_ADMIN = "emil.gamad@boozy.ph"
 FIREBASE_PASSWORD = "boozy-biz-sync-staging"
+
+GCP_TOPIC_NAME = 'projects/bzy-biz-sync-stg/topics/test'.format(
+    project_id=os.getenv('GOOGLE_CLOUD_PROJECT'),
+    topic='test',  # Set this to something appropriate.
+)
+
+GCP_SUB_NAME = 'projects/bzy-biz-sync-stg/subscriptions/testsub'.format(
+    project_id=os.getenv('GOOGLE_CLOUD_PROJECT'),
+    sub='testsub',  # Set this to something appropriate.
+)

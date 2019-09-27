@@ -3,6 +3,7 @@ from flask import request, jsonify, Response
 from flask_restful import Resource, reqparse
 from flask_restful.utils import cors
 from services.sync_biz_stores_service import SyncBizStoreService
+from services.google_publish_message_service import GooglePublishMessageService
 import serializer
 
 parser = reqparse.RequestParser()
@@ -24,5 +25,5 @@ class MainStoreOrderCreatedView(Resource):
         serialized_order = serializer.main_sync_order_serializer(order_data)
         if serialized_order is None:
             return Response(status=200)
-        # SyncBizStoreService(serialized_order).run()
-        return serialized_order
+        GooglePublishMessageService(serialized_order).run()
+        return Response(status=200)
