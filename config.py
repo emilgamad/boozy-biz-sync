@@ -3,7 +3,7 @@ import os
 
 PROJECT_NAME = str(os.getenv('GOOGLE_CLOUD_PROJECT'))
 
-if "staging" in PROJECT_NAME:
+if PROJECT_NAME == "None" or "bzy-biz-sync-stg" in PROJECT_NAME:
     MAIN_STORE = [
         {"API_KEY": "8b2c2f515ff17743be71ae5b479297c9"},
         {"PASSWORD": "7ae645b889c0708b6747bb5dbd31e382"},
@@ -11,12 +11,12 @@ if "staging" in PROJECT_NAME:
         {"DOMAIN": "letsboozy-staging.myshopify.com/admin/api/2019-07/"}]
 
     # Staging Values
-    locations_list = {
+    MAIN_LOCATIONS_LIST = {
         "MAIN_STORE_MAKATI_HUB" : 6956482671,
         "MAIN_STORE_QC_HUB" : 7124451439,
         "MAIN_STORE_ALABANG_HUB" : 15657533551}
 
-elif "boozy-biz-sync" in PROJECT_NAME or PROJECT_NAME == "None":
+elif "boozy-biz-sync" in PROJECT_NAME:
     MAIN_STORE = [
         {"API_KEY": "f3ec4f3a98c7f27aff8d470053d6242e"},
         {"PASSWORD": "171df07b59a4faba3a2575aadd0a1940"},
@@ -24,7 +24,7 @@ elif "boozy-biz-sync" in PROJECT_NAME or PROJECT_NAME == "None":
         {"DOMAIN": "letsboozy.myshopify.com/admin/api/2019-07/"}]
 
     #Prod Values
-    locations_list = {
+    MAIN_LOCATIONS_LIST = {
         "MAIN_STORE_MAKATI_HUB" : 42445973,
         "MAIN_STORE_QC_HUB" : 13981909067,
         "MAIN_STORE_ALABANG_HUB" : 15035039819}
@@ -43,9 +43,16 @@ BIZ_STORE = [
 BIZ_STORE_DOMAIN = "https://{}:{}boozy-biz.myshopify.com/admin/api"\
     "/2019-07/".format(BIZ_STORE[0]['API_KEY'], BIZ_STORE[1]['PASSWORD'])
 
+
 BIZ_STORE_MAKATI_HUB = 33229733968
 BIZ_STORE_QC_HUB = 13981909067
 BIZ_STORE_ALABANG_HUB = 33992802384
+
+BIZ_LOCATIONS_LIST = {
+    "BIZ_STORE_MAKATI_HUB": 33229733968,
+    "BIZ_STORE_QC_HUB": 13981909067,
+    "BIZ_STORE_ALABANG_HUB": 33992802384
+}
 
 FIREBASE_CONFIG = {
     "apiKey": "AIzaSyAQbrpEylB7Q4U6qtVV6byuCHXRHVxtIUY",
@@ -59,12 +66,6 @@ FIREBASE_CONFIG = {
 FIREBASE_ADMIN = "emil.gamad@boozy.ph"
 FIREBASE_PASSWORD = "boozy-biz-sync-staging"
 
-GCP_TOPIC_NAME = 'projects/bzy-biz-sync-stg/topics/test'.format(
-    project_id=os.getenv('GOOGLE_CLOUD_PROJECT'),
-    topic='test',  # Set this to something appropriate.
-)
+GCP_TOPIC_NAME = "projects/bzy-biz-sync-stg/topics/boozy-biz-sync"
 
-GCP_SUB_NAME = 'projects/bzy-biz-sync-stg/subscriptions/testsub'.format(
-    project_id=os.getenv('GOOGLE_CLOUD_PROJECT'),
-    sub='testsub',  # Set this to something appropriate.
-)
+GCP_SUB_NAME = 'projects/bzy-biz-sync-stg/subscriptions/testsub'

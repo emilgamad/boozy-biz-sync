@@ -10,15 +10,21 @@ APP = Flask(__name__)
 CORS(APP)
 API = Api(APP)
 
-# Get (index)
-API.add_resource(views.Index, '/api/v1')
 
-# POST Main Store Order Creation
-# API.add_resource(views.BizStoreOrderCreatedView, '/api/v1/order/biz')
+# Get (Domain)
+API.add_resource(views.Index, '/')
+
+# Get (API index)
+API.add_resource(views.APIIndex, '/api/v1')
 
 # POST Main Store Order Creation
 API.add_resource(views.MainStoreOrderCreatedView, '/api/v1/order/main')
 
+# POST Biz Store Order Creation
+API.add_resource(views.BizStoreOrderCreatedView, '/api/v1/order/biz')
+
+# POST Process received sync info
+API.add_resource(views.SyncOrderView, '/api/v1/sync')
+
 if __name__ == '__main__':
-    GoogleSubscriptionService().run()
     APP.run(host='0.0.0.0', port=8080, debug=True)
