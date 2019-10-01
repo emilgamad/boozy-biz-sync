@@ -8,13 +8,17 @@ from datetime import datetime
 
 class Store():
     """Setters"""
-    def __init__(self):
-        self.firebase = pyrebase.initialize_app(config.FIREBASE_CONFIG)
-        auth = self.firebase.auth()
-        self.user = auth.sign_in_with_email_and_password(
-            config.FIREBASE_ADMIN, config.FIREBASE_PASSWORD)
 
-    # def start_sync_store_listener_service(self):
+    def biz_store_get_product_by_title(self, product_title):
+        url = "{}product.json?title={}".format(
+            config.BIZ_STORE_DOMAIN,
+            product_title)
+        response = requests.get(url=url)
+        if response.status_code == 200:
+            product = json.loads(response.text)
+
+            return item_levels['inventory_levels']
+        return None
     #     db = self.firebase.database()
     #     db.child("syncStore").stream(self.stream_handler)
     #

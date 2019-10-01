@@ -40,28 +40,30 @@ def main_sync_order_serializer(order_data):
             print("Error in getting product {}".format(product_id))
             print(str(e))
             return None
-        if 'b2b' in product['tags']:
-            try:
-                variant = manager.main_store_get_variant_by_id(variant_id)
-            except Exception as e:
-                print("Error in getting variant {}".format(variant_id))
-                print(str(e))
-                return None
-            print(variant)
-            inventory_item_id = variant['inventory_item_id']
-            try:
-                item_levels = manager.main_store_get_item_levels_by_id(inventory_item_id)
-            except Exception as e:
-                print("Error in getting item levels {}".format(inventory_item_id))
-                print(str(e))
-                return None
-            serialized_item_levels = main_store_serialize_item_level(item_levels)
-            sync_details[variant_title] = {
-                "variant_title": variant_title,
-                "item_levels": serialized_item_levels,
-                "product": product
+        try:
+            variant = manager.main_store_get_variant_by_id(variant_id)
+        except Exception as e:
+            print("Error in getting variant {}".format(variant_id))
+            print(str(e))
+            return None
+        print(variant)
+        inventory_item_id = variant['inventory_item_id']
+        try:
+            item_levels = manager.main_store_get_item_levels_by_id(inventory_item_id)
+        except Exception as e:
+            print("Error in getting item levels {}".format(inventory_item_id))
+            print(str(e))
+            return None
+        serialized_item_levels = main_store_serialize_item_level(item_levels)
+        sync_details[variant_title] = {
+            "product_title": product['title'],
+            "item_levels": serialized_item_levels,
+            "product": product
             }
-    return json.dumps(sync_details)
+    order = {}
+    order['store'] = "Main Sync"
+    order['items'] = sync_details
+    return json.dumps(order)
 
 def biz_sync_order_serializer(order_data):
     """Serializes order data"""
@@ -83,25 +85,27 @@ def biz_sync_order_serializer(order_data):
             print("Error in getting product {}".format(product_id))
             print(str(e))
             return None
-        if 'b2b' in product['tags']:
-            try:
-                variant = manager.biz_store_get_variant_by_id(variant_id)
-            except Exception as e:
-                print("Error in getting variant {}".format(variant_id))
-                print(str(e))
-                return None
-            print(variant)
-            inventory_item_id = variant['inventory_item_id']
-            try:
-                item_levels = manager.biz_store_get_item_levels_by_id(inventory_item_id)
-            except Exception as e:
-                print("Error in getting item levels {}".format(inventory_item_id))
-                print(str(e))
-                return None
-            serialized_item_levels = biz_store_serialize_item_level(item_levels)
-            sync_details[variant_title] = {
-                "variant_title": variant_title,
-                "item_levels": serialized_item_levels,
-                "product": product
-            }
-    return json.dumps(sync_details)
+        try:
+            variant = manager.biz_store_get_variant_by_id(variant_id)
+        except Exception as e:
+            print("Error in getting variant {}".format(variant_id))
+            print(str(e))
+            return None
+        print(variant)
+        inventory_item_id = variant['inventory_item_id']
+        try:
+            item_levels = manager.biz_store_get_item_levels_by_id(inventory_item_id)
+        except Exception as e:
+            print("Error in getting item levels {}".format(inventory_item_id))
+            print(str(e))
+            return None
+        serialized_item_levels = biz_store_serialize_item_level(item_levels)
+        sync_details[variant_title] = {
+            "variant_title": variant_title,
+            "item_levels": serialized_item_levels,
+            "product": product
+        }
+    order = {}
+    order['store'] = "Biz Sync"
+    order['items'] = sync_details
+    return json.dumps(order)

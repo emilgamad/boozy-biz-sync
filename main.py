@@ -2,9 +2,7 @@
 from flask import Flask
 from flask_restful import Api
 from flask_cors import CORS
-import store
 import views
-from services.google_subscription_service import GoogleSubscriptionService
 
 APP = Flask(__name__)
 CORS(APP)

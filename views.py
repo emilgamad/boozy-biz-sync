@@ -32,9 +32,10 @@ class MainStoreOrderCreatedView(Resource):
         order_data = request.get_json()
         serialized_order = serializer.main_sync_order_serializer(order_data)
         if serialized_order is None:
-            return Response(status=200)
+            return Response(status=500)
         GooglePublishMessageService(serialized_order).run()
         return Response(status=200)
+        # return serialized_order
 
 
 class BizStoreOrderCreatedView(Resource):
@@ -44,18 +45,17 @@ class BizStoreOrderCreatedView(Resource):
         order_data = request.get_json()
         serialized_order = serializer.biz_sync_order_serializer(order_data)
         if serialized_order is None:
-            return Response(status=200)
+            return Response(status=500)
         GooglePublishMessageService(serialized_order).run()
         return Response(status=200)
+        # return serialized_order
 
 class SyncOrderView(Resource):
     """Process received sync details"""
     @cors.crossdomain(origin='*')
     def post(self):
         sync_order_data = request.get_json()
-        print(sync_order_data)
-        # process_sync_order_service = ProcessSyncOrderService(sync_order_data)
-        # if process_sync_order_service is None:
-        #     return Response(status=200)
-        # GooglePublishMessageService(serialized_order).run()
+        process_sync_order_service = ProcessSyncOrderService(sync_order_data).run()
+        if process_sync_order_service is None:
+            return Response(status=500)
         return Response(status=200)
