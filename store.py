@@ -1,28 +1,19 @@
 """Boozy Biz Sync Store"""
 import requests
-import pyrebase
 import config
 import json
-from datetime import datetime
+import serializer
 
+def biz_store_create_product(product):
+    biz_store_product_id = 0
+    biz_store_product = serializer.remove_all_ids_from_product(product)
 
-class Store():
-    """Setters"""
+    url = "{}products.json".format(config.BIZ_STORE_DOMAIN)
+    print(url)
+    response = requests.post(url=url, json=biz_store_product)
+    if response.status_code == 200:
+        biz_store_product_id = response['product']['id']
+    return biz_store_product_id
 
-    def biz_store_get_product_by_title(self, product_title):
-        url = "{}product.json?title={}".format(
-            config.BIZ_STORE_DOMAIN,
-            product_title)
-        response = requests.get(url=url)
-        if response.status_code == 200:
-            product = json.loads(response.text)
-
-            return item_levels['inventory_levels']
-        return None
-    #     db = self.firebase.database()
-    #     db.child("syncStore").stream(self.stream_handler)
-    #
-    # def stream_handler(self, message):
-    #     print(message["event"]) # put
-        # print(message["path"]) # /-K7yGTTEp7O549EzTYtI
-        # print(message["data"]) # {'title': 'Pyrebase', "body": "etc..."}
+def biz_store_set_item_level(biz_store_inventory_item_id, serialized_product_item_levels):
+    pass

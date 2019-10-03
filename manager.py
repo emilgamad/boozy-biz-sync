@@ -47,6 +47,16 @@ def biz_store_get_product_by_id(product_id):
         return product['product']
     return None
 
+def biz_store_get_product_by_title(product_title):
+    url = "{}product.json?title={}".format(
+        config.BIZ_STORE_DOMAIN,
+        product_title)
+    response = requests.get(url=url)
+    if response.status_code == 200:
+        product = json.loads(response.text)
+        return product['products'][0]
+    return None
+
 def biz_store_get_variant_by_id(variant_id):
     url = "{}variants/{}.json".format(
         config.BIZ_STORE_DOMAIN,

@@ -3,7 +3,7 @@ import os
 
 PROJECT_NAME = str(os.getenv('GOOGLE_CLOUD_PROJECT'))
 
-if PROJECT_NAME == "None" or "bzy-biz-sync-stg" in PROJECT_NAME:
+if "bzy-biz-sync-stg" in PROJECT_NAME:
 
     MAIN_STORE = [
         {"API_KEY": "f3ec4f3a98c7f27aff8d470053d6242e"},
@@ -17,7 +17,7 @@ if PROJECT_NAME == "None" or "bzy-biz-sync-stg" in PROJECT_NAME:
         "MAIN_STORE_QC_HUB" : 7124451439,
         "MAIN_STORE_ALABANG_HUB" : 15657533551}
 
-elif "boozy-biz-sync" in PROJECT_NAME:
+elif PROJECT_NAME == "None" or "boozy-biz-sync" in PROJECT_NAME:
     MAIN_STORE = [
         {"API_KEY": "8b2c2f515ff17743be71ae5b479297c9"},
         {"PASSWORD": "7ae645b889c0708b6747bb5dbd31e382"},
@@ -46,7 +46,7 @@ BIZ_STORE_DOMAIN = "https://{}:{}boozy-biz.myshopify.com/admin/api"\
 
 
 BIZ_STORE_MAKATI_HUB = 33229733968
-BIZ_STORE_QC_HUB = 13981909067
+BIZ_STORE_QC_HUB = 33992900688
 BIZ_STORE_ALABANG_HUB = 33992802384
 
 BIZ_LOCATIONS_LIST = {
