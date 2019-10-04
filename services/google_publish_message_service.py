@@ -10,4 +10,5 @@ class GooglePublishMessageService():
         self.message = str(message).encode()
 
     def run(self):
+        print("Google published: {}".format(self.message))
         self.publisher.publish(self.topic_name, self.message)

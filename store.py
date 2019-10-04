@@ -1,7 +1,7 @@
 """Boozy Biz Sync Store"""
 import requests
 import config
-import json
+import time
 import serializer
 
 def biz_store_create_product(product):
@@ -16,6 +16,7 @@ def biz_store_create_product(product):
     return biz_store_product_id
 
 def biz_store_set_item_level(biz_store_inventory_item_id, serialized_product_item_levels):
+    print(serialized_product_item_levels)
     url = "{}inventory_levels/set.json".format(config.BIZ_STORE_DOMAIN)
     print(url)
     try:
@@ -25,6 +26,7 @@ def biz_store_set_item_level(biz_store_inventory_item_id, serialized_product_ite
             "available": serialized_product_item_levels['MAIN_STORE_MAKATI_HUB']
         }
         response = requests.post(url=url, json=payload)
+        time.sleep(1)
     except Exception as e:
         print("Error in setting BIZ_STORE_MAKATI_HUB ")
         print(str(e))
@@ -36,8 +38,9 @@ def biz_store_set_item_level(biz_store_inventory_item_id, serialized_product_ite
             "available": serialized_product_item_levels['MAIN_STORE_QC_HUB']
         }
         response = requests.post(url=url, json=payload)
+        time.sleep(1)
     except Exception as e:
-        print("Error in setting BIZ_STORE_MAKATI_HUB ")
+        print("Error in setting BIZ_STORE_QC_HUB ")
         print(str(e))
 
     try:
@@ -47,46 +50,51 @@ def biz_store_set_item_level(biz_store_inventory_item_id, serialized_product_ite
             "available": serialized_product_item_levels['MAIN_STORE_ALABANG_HUB']
         }
         response = requests.post(url=url, json=payload)
+        time.sleep(1)
     except Exception as e:
-        print("Error in setting BIZ_STORE_MAKATI_HUB ")
+        print("Error in setting BIZ_STORE_ALABANG_HUB ")
         print(str(e))
 
     return response
 
-def main_store_set_item_level(biz_store_inventory_item_id, serialized_product_item_levels):
+def main_store_set_item_level(main_store_inventory_item_id, serialized_product_item_levels):
+    print(serialized_product_item_levels)
     url = "{}inventory_levels/set.json".format(config.MAIN_STORE_DOMAIN)
     print(url)
     try:
         payload = {
-            "inventory_item_id": biz_store_inventory_item_id,
+            "inventory_item_id": main_store_inventory_item_id,
             "location_id": config.MAIN_LOCATIONS_LIST['MAIN_STORE_MAKATI_HUB'],
             "available": serialized_product_item_levels['BIZ_STORE_MAKATI_HUB']
         }
         response = requests.post(url=url, json=payload)
+        time.sleep(1)
     except Exception as e:
         print("Error in setting BIZ_STORE_MAKATI_HUB ")
         print(str(e))
 
     try:
         payload = {
-            "inventory_item_id": biz_store_inventory_item_id,
-            "location_id": config.BIZ_LOCATIONS_LIST['BIZ_STORE_QC_HUB'],
-            "available": serialized_product_item_levels['MAIN_STORE_QC_HUB']
+            "inventory_item_id": main_store_inventory_item_id,
+            "location_id": config.MAIN_LOCATIONS_LIST['MAIN_STORE_QC_HUB'],
+            "available": serialized_product_item_levels['BIZ_STORE_QC_HUB']
         }
         response = requests.post(url=url, json=payload)
+        time.sleep(1)
     except Exception as e:
-        print("Error in setting BIZ_STORE_MAKATI_HUB ")
+        print("Error in setting BIZ_STORE_QC_HUB ")
         print(str(e))
 
     try:
         payload = {
-            "inventory_item_id": biz_store_inventory_item_id,
-            "location_id": config.BIZ_LOCATIONS_LIST['BIZ_STORE_ALABANG_HUB'],
-            "available": serialized_product_item_levels['MAIN_STORE_ALABANG_HUB']
+            "inventory_item_id": main_store_inventory_item_id,
+            "location_id": config.MAIN_LOCATIONS_LIST['MAIN_STORE_ALABANG_HUB'],
+            "available": serialized_product_item_levels['BIZ_STORE_ALABANG_HUB']
         }
         response = requests.post(url=url, json=payload)
+        time.sleep(1)
     except Exception as e:
-        print("Error in setting BIZ_STORE_MAKATI_HUB ")
+        print("Error in setting BIZ_STORE_ALABANG_HUB ")
         print(str(e))
 
     return response
