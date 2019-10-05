@@ -95,7 +95,7 @@ def biz_store_get_item_levels_by_id(item_inventory_id):
     return None
 
 def biz_store_get_order_by_id(order_id):
-    url = "{}order/{}.json".format(
+    url = "{}orders/{}.json".format(
         config.BIZ_STORE_DOMAIN,
         order_id)
     print(url)

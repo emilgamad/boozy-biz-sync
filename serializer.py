@@ -6,6 +6,9 @@ import manager
 
 def biz_store_refund_serializer(refund_data):
     print(refund_data)
+    sync_order = {}
+    sync_order['store'] = "Sync to Main"
+    order_items = []
     sync_details = {}
     biz_order_id = refund_data['order_id']
     try:
@@ -26,25 +29,28 @@ def biz_store_refund_serializer(refund_data):
             "product": {'variants':[{'inventory_item_id':None}]},
             "quantity": -(item['quantity']),
             "location_id": location_id}
-    order = {}
-    order['store'] = "Sync to Main"
-    order['items'] = sync_details
-    return json.dumps(order)
+        order_items.append(sync_details)
+    sync_order['items'] = order_items
+    return json.dumps(sync_order)
+
 
 def main_store_refund_serializer(refund_data):
     print(refund_data)
+    sync_order = {}
+    sync_order['store'] = "Sync to Biz"
+    order_items = []
     sync_details = {}
     items = refund_data['refund_line_items']
     for item in items:
+        print(item)
         title = item['line_item']['title']
-        product_id = item[0]['line_item']['product_id']
+        product_id = item['line_item']['product_id']
         product = manager.main_store_get_product_by_id(product_id)
         sync_details[title] = {
             "product": product}
-    order = {}
-    order['store'] = "Sync to Biz"
-    order['items'] = sync_details
-    return sync_details
+        order_items.append(sync_details)
+    sync_order['items'] = order_items
+    return json.dumps(sync_order)
 
 
 def main_store_serialize_item_level(item_levels):
@@ -67,7 +73,9 @@ def biz_store_serialize_item_level(item_levels):
 
 def main_sync_order_serializer(order_data):
     """Serializes order data"""
-    import manager
+    sync_order = {}
+    sync_order['store'] = "Sync to Biz"
+    order_items = []
     sync_details = {}
     try:
         order = order_data['order']
@@ -85,15 +93,16 @@ def main_sync_order_serializer(order_data):
             return None
         sync_details[product['title']] = {
             "product": product}
-    order = {}
-    order['store'] = "Sync to Biz"
-    order['items'] = sync_details
-    return json.dumps(order)
+        order_items.append(sync_details)
+    sync_order['items'] = order_items
+    return json.dumps(sync_order)
 
 
 def biz_sync_order_serializer(order_data):
     """Serializes order data"""
-    import manager
+    sync_order = {}
+    sync_order['store'] = "Sync to Main"
+    order_items = []
     sync_details = {}
     try:
         order = order_data['order']
@@ -122,10 +131,9 @@ def biz_sync_order_serializer(order_data):
             "product": product,
             "quantity": adjustment,
             "location_id": location_id}
-    order = {}
-    order['store'] = "Sync to Main"
-    order['items'] = sync_details
-    return json.dumps(order)
+        order_items.append(sync_details)
+    sync_order['items'] = order_items
+    return json.dumps(sync_order)
 
 
 def remove_all_ids_from_product(product):
