@@ -16,7 +16,6 @@ def biz_store_create_product(product):
     return biz_store_product_id
 
 def biz_store_set_item_level(biz_store_inventory_item_id, serialized_product_item_levels):
-    print(serialized_product_item_levels)
     url = "{}inventory_levels/set.json".format(config.BIZ_STORE_DOMAIN)
     print(url)
     try:
@@ -58,7 +57,6 @@ def biz_store_set_item_level(biz_store_inventory_item_id, serialized_product_ite
     return response
 
 def main_store_set_item_level(main_store_inventory_item_id, serialized_product_item_levels):
-    print(serialized_product_item_levels)
     url = "{}inventory_levels/set.json".format(config.MAIN_STORE_DOMAIN)
     print(url)
     try:
@@ -95,6 +93,30 @@ def main_store_set_item_level(main_store_inventory_item_id, serialized_product_i
         time.sleep(1)
     except Exception as e:
         print("Error in setting BIZ_STORE_ALABANG_HUB ")
+        print(str(e))
+
+    return response
+
+def main_store_adjust_item_level(
+        main_store_inventory_item_id,
+        location_id,
+        adjustment):
+    modifier = -adjustment
+    print("Biz Store location id : {}".format(location_id))
+    location = serializer.get_main_location_from_biz_location_id(location_id)
+    print("Main Store location: {}".format(location))
+    url = "{}inventory_levels/adjust.json".format(config.MAIN_STORE_DOMAIN)
+    print(url)
+    try:
+        payload = {
+            "inventory_item_id": main_store_inventory_item_id,
+            "location_id": config.MAIN_LOCATIONS_LIST[location],
+            "available_adjustment": modifier
+        }
+        response = requests.post(url=url, json=payload)
+        time.sleep(1)
+    except Exception as e:
+        print("Error in setting {}".format(location))
         print(str(e))
 
     return response

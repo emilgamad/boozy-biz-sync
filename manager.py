@@ -69,7 +69,7 @@ def biz_store_get_product_by_title(product_title):
     response = requests.get(url=url)
     if response.status_code == 200:
         product = json.loads(response.text)
-        return product['products'][0]
+        return product['products']
     return None
 
 def biz_store_get_variant_by_id(variant_id):
@@ -92,4 +92,15 @@ def biz_store_get_item_levels_by_id(item_inventory_id):
     if response.status_code == 200:
         item_levels = json.loads(response.text)
         return item_levels['inventory_levels']
+    return None
+
+def biz_store_get_order_by_id(order_id):
+    url = "{}order/{}.json".format(
+        config.BIZ_STORE_DOMAIN,
+        order_id)
+    print(url)
+    response = requests.get(url=url)
+    if response.status_code == 200:
+        order = json.loads(response.text)
+        return order['order']
     return None

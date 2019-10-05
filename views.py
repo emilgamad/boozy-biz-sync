@@ -60,11 +60,44 @@ class BizStoreOrderCreatedView(Resource):
         return Response(status=200)
         # return serialized_order
 
+class MainStoreRefundCreatedView(Resource):
+    """Main Store Refund Created View"""
+    @cors.crossdomain(origin='*')
+    def post(self):
+        refund_data = request.get_json()
+        print("Main Store Refund Created View")
+        try:
+            serialized_refund = serializer.main_store_refund_serializer(refund_data)
+        except Exception as e:
+            print(str(e))
+            return Response(status=200)
+        if serialized_refund is None:
+            return Response(status=200)
+        GooglePublishMessageService(serialized_refund).run()
+        return Response(status=200)
+
+class BizStoreRefundCreatedView(Resource):
+    """Biz Store Refund Created View"""
+    @cors.crossdomain(origin='*')
+    def post(self):
+        refund_data = request.get_json()
+        print("Biz Store Refund Created View")
+        try:
+            serialized_order = serializer.biz_store_refund_serializer(refund_data)
+        except Exception as e:
+            print(str(e))
+            return Response(status=200)
+        if serialized_order is None:
+            return Response(status=200)
+        GooglePublishMessageService(serialized_order).run()
+        return Response(status=200)
+
 class SyncOrderView(Resource):
     """Process received sync details"""
     @cors.crossdomain(origin='*')
     def post(self):
         sync_order_data = request.get_json()
+        print(sync_order_data)
         process_sync_order_service = ProcessSyncOrderService(sync_order_data).run()
         if process_sync_order_service is None:
             return Response(status=200)

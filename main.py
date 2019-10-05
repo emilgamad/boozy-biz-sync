@@ -24,5 +24,11 @@ api.add_resource(views.BizStoreOrderCreatedView, '/api/v1/order/biz')
 # POST Process received sync info
 api.add_resource(views.SyncOrderView, '/api/v1/sync')
 
+# POST Main Store Refund Created
+api.add_resource(views.MainStoreRefundCreatedView, '/api/v1/refund/main')
+
+# POST Biz Store Refund Created
+api.add_resource(views.BizStoreRefundCreatedView, '/api/v1/refund/biz')
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)

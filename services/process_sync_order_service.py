@@ -34,7 +34,7 @@ class ProcessSyncOrderService():
                 if len(biz_store_product) == 0:
                     continue
 
-                biz_store_inventory_item_id =  biz_store_product['variants'][0]['inventory_item_id']
+                biz_store_inventory_item_id =  biz_store_product[0]['variants'][0]['inventory_item_id']
                 print(biz_store_inventory_item_id)
                 try:
                     product_item_levels = manager.main_store_get_item_levels_by_id(product_inventory_item_id)
@@ -59,6 +59,8 @@ class ProcessSyncOrderService():
                 return "Biz Store Synced"
 
             elif self.store == 'Sync to Main':
+                adjustment = self.items[product_title]['quantity']
+                location_id = self.items[product_title]['location_id']
                 try:
                     main_store_product = manager.main_store_get_product_by_title(
                         product_title)
@@ -84,9 +86,10 @@ class ProcessSyncOrderService():
                 print(serialized_product_item_levels)
                 print(serialized_main_item_levels)
                 try:
-                    response = store.main_store_set_item_level(
+                    response = store.main_store_adjust_item_level(
                         main_store_inventory_item_id,
-                        serialized_product_item_levels)
+                        location_id,
+                        adjustment)
                     print(response.text)
                 except Exception as e:
                     print("Error in setting item levels in main store")

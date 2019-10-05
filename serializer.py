@@ -1,6 +1,51 @@
 """Serializes received data"""
 import config
 import json
+import manager
+
+
+def biz_store_refund_serializer(refund_data):
+    print(refund_data)
+    sync_details = {}
+    biz_order_id = refund_data['order_id']
+    try:
+        order =  manager.biz_store_get_order_by_id(biz_order_id)
+    except Exception as e:
+        print("Order has no note attribute location id")
+        print(str(e))
+        return None
+    location = order['note_attributes']
+    location_id = config.BIZ_STORE_QC_HUB
+    for elem in location:
+        if elem['name'] == 'location_id':
+            location_id = elem['value']
+
+    items = refund_data['refund_line_items']
+    for item in items:
+        sync_details[item['title']] = {
+            "product": {'variants':[{'inventory_item_id':None}]},
+            "quantity": -(item['quantity']),
+            "location_id": location_id}
+    order = {}
+    order['store'] = "Sync to Main"
+    order['items'] = sync_details
+    return json.dumps(order)
+
+def main_store_refund_serializer(refund_data):
+    print(refund_data)
+    sync_details = {}
+    items = refund_data['refund_line_items']
+    for item in items:
+        title = item['line_item']['title']
+        product_id = item[0]['line_item']['product_id']
+        product = manager.main_store_get_product_by_id(product_id)
+        sync_details[title] = {
+            "product": product}
+    order = {}
+    order['store'] = "Sync to Biz"
+    order['items'] = sync_details
+    return sync_details
+
 
 def main_store_serialize_item_level(item_levels):
     serialized_item_levels = {}
@@ -58,6 +103,15 @@ def biz_sync_order_serializer(order_data):
     variant_id_list = order['line_items']
     for item in variant_id_list:
         product_id = item['product_id']
+        adjustment = item['quantity']
+        location_id = config.BIZ_STORE_QC_HUB
+        try:
+            for elem in item['note_attributes']:
+                if elem['name'] == 'location_id':
+                    location_id = elem['value']
+        except Exception as e:
+            print("Order has no note attribute location id")
+            print(str(e))
         try:
             product = manager.biz_store_get_product_by_id(product_id)
         except Exception as e:
@@ -65,7 +119,9 @@ def biz_sync_order_serializer(order_data):
             print(str(e))
             return None
         sync_details[product['title']] = {
-            "product": product}
+            "product": product,
+            "quantity": adjustment,
+            "location_id": location_id}
     order = {}
     order['store'] = "Sync to Main"
     order['items'] = sync_details
@@ -120,3 +176,16 @@ def remove_all_ids_from_product(product):
         ]
     }
     return serialized_product
+
+
+def get_main_location_from_biz_location_id(location_id):
+    biz_store_location = config.BIZ_STORE_QC_HUB
+    for elem in config.BIZ_LOCATIONS_LIST:
+        if config.BIZ_LOCATIONS_LIST[elem] == location_id:
+            biz_store_location = elem
+    if biz_store_location == "BIZ_STORE_MAKATI_HUB":
+        return "MAIN_STORE_MAKATI_HUB"
+    if biz_store_location == "BIZ_STORE_QC_HUB":
+        return "MAIN_STORE_QC_HUB"
+    if biz_store_location == "BIZ_STORE_ALABABG_HUB":
+        return "BIZ_STORE_ALABANG_HUB"
