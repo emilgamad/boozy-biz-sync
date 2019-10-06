@@ -103,20 +103,16 @@ def main_store_adjust_item_level(
         adjustment):
     modifier = -adjustment
     print("Biz Store location id : {}".format(location_id))
-    location = serializer.get_main_location_from_biz_location_id(location_id)
+    location = serializer.get_main_location_from_biz_location_id(int(location_id))
+    print(location)
     print("Main Store location: {}".format(location))
     url = "{}inventory_levels/adjust.json".format(config.MAIN_STORE_DOMAIN)
     print(url)
-    try:
-        payload = {
-            "inventory_item_id": main_store_inventory_item_id,
-            "location_id": config.MAIN_LOCATIONS_LIST[location],
-            "available_adjustment": modifier
-        }
-        response = requests.post(url=url, json=payload)
-        time.sleep(1)
-    except Exception as e:
-        print("Error in setting {}".format(location))
-        print(str(e))
-
+    payload = {
+        "inventory_item_id": main_store_inventory_item_id,
+        "location_id": config.MAIN_LOCATIONS_LIST[location],
+        "available_adjustment": modifier
+    }
+    response = requests.post(url=url, json=payload)
+    print(response.text)
     return response
