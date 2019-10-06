@@ -9,35 +9,29 @@ class ProcessSyncOrderService():
 
     def __init__(self, sync_order_data):
 
-        sync_orders = sync_order_data['message']['data']
-        try:
-            sync_orders = json.loads(base64.b64decode(sync_orders).decode())
-        except:
-            sync_orders = base64.b64decode(sync_orders).decode()
+        sync_orders = sync_order_data#['message']['data']
+        # try:
+        #     sync_orders = json.loads(base64.b64decode(sync_orders).decode())
+        # except:
+        #     sync_orders = json.loads(base64.b64decode(sync_orders).decode())
         print(sync_orders)
         self.store = sync_orders['store']
-        print(self.store)
+        # print(self.store)
         self.items = sync_orders['items']
         print(self.items)
 
     def run(self):
         for orders in self.items:
-            product_title = orders
-            product = self.items[product_title]['product']
-            product_inventory_item_id = product['variants'][0]['inventory_item_id']
-
+            print(orders)
+            type(orders)
+            product_title = orders['product']
             if self.store == 'Sync to Biz':
-                try:
-                    biz_store_product = manager.biz_store_get_product_by_title(
+                biz_store_product = manager.biz_store_get_product_by_title(
                         product_title)
-                except Exception as e:
-                    print("Error in getting biz store product")
-                    print(str(e))
-                    return None
-
                 if len(biz_store_product) == 0:
                     continue
-
+                product = manager.main_store_get_product_by_title(product_title)
+                product_inventory_item_id = product['variants'][0]['inventory_item_id']
                 biz_store_inventory_item_id =  biz_store_product[0]['variants'][0]['inventory_item_id']
                 print(biz_store_inventory_item_id)
                 try:
@@ -60,7 +54,7 @@ class ProcessSyncOrderService():
                     print("Error in getting item levels in biz store")
                     print(str(e))
                     return None
-                return "Biz Store Synced"
+                print("Biz Store Synced")
 
             elif self.store == 'Sync to Main':
                 adjustment = self.items[product_title]['quantity']

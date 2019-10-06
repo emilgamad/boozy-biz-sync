@@ -34,6 +34,7 @@ class MainStoreOrderCreatedView(Resource):
     def post(self):
         order_data = request.get_json()
         print("Main Store Order Created View")
+        print(order_data)
         try:
             serialized_order = serializer.main_sync_order_serializer(order_data)
         except Exception as e:
@@ -52,6 +53,7 @@ class BizStoreOrderCreatedView(Resource):
     def post(self):
         order_data = request.get_json()
         print("Biz Store Order Created View")
+        print(order_data)
         try:
             serialized_order = serializer.biz_sync_order_serializer(order_data)
         except Exception as e:
@@ -69,6 +71,7 @@ class MainStoreRefundCreatedView(Resource):
     def post(self):
         refund_data = request.get_json()
         print("Main Store Refund Created View")
+        print(refund_data)
         try:
             serialized_refund = serializer.main_store_refund_serializer(refund_data)
         except Exception as e:
@@ -85,6 +88,7 @@ class BizStoreRefundCreatedView(Resource):
     def post(self):
         refund_data = request.get_json()
         print("Biz Store Refund Created View")
+        print(refund_data)
         try:
             serialized_order = serializer.biz_store_refund_serializer(refund_data)
         except Exception as e:
@@ -100,6 +104,7 @@ class SyncOrderView(Resource):
     @cors.crossdomain(origin='*')
     def post(self):
         sync_order_data = request.get_json()
+        print(sync_order_data)
         try:
             process_sync_order_service = ProcessSyncOrderService(sync_order_data).run()
         except:

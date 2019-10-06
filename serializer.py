@@ -37,19 +37,14 @@ def biz_store_refund_serializer(refund_data):
 def main_store_refund_serializer(refund_data):
     print(refund_data)
     sync_order = {}
-    sync_order['store'] = "Sync to Biz"
     order_items = []
-    sync_details = {}
     items = refund_data['refund_line_items']
     for item in items:
         print(item)
         title = item['line_item']['title']
-        product_id = item['line_item']['product_id']
-        product = manager.main_store_get_product_by_id(product_id)
-        sync_details[title] = {
-            "product": product}
-        order_items.append(sync_details)
+        order_items.append({'product': title})
     sync_order['items'] = order_items
+    sync_order['store'] = "Sync to Biz"
     return json.dumps(sync_order)
 
 
@@ -74,9 +69,7 @@ def biz_store_serialize_item_level(item_levels):
 def main_sync_order_serializer(order_data):
     """Serializes order data"""
     sync_order = {}
-    sync_order['store'] = "Sync to Biz"
     order_items = []
-    sync_details = {}
     try:
         order = order_data['order']
     except KeyError:
@@ -84,6 +77,7 @@ def main_sync_order_serializer(order_data):
 
     variant_id_list = order['line_items']
     for item in variant_id_list:
+        sync_details = {}
         product_id = item['product_id']
         try:
             product = manager.main_store_get_product_by_id(product_id)
@@ -91,10 +85,9 @@ def main_sync_order_serializer(order_data):
             print("Error in getting product {}".format(product_id))
             print(str(e))
             return None
-        sync_details[product['title']] = {
-            "product": product}
-        order_items.append(sync_details)
+        order_items.append({"product": product['title']})
     sync_order['items'] = order_items
+    sync_order['store'] = "Sync to Biz"
     return json.dumps(sync_order)
 
 
@@ -103,7 +96,7 @@ def biz_sync_order_serializer(order_data):
     sync_order = {}
     sync_order['store'] = "Sync to Main"
     order_items = []
-    sync_details = {}
+
     try:
         order = order_data['order']
     except KeyError:
@@ -111,6 +104,7 @@ def biz_sync_order_serializer(order_data):
 
     variant_id_list = order['line_items']
     for item in variant_id_list:
+        sync_details = {}
         product_id = item['product_id']
         adjustment = item['quantity']
         location_id = config.BIZ_STORE_QC_HUB
