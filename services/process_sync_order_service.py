@@ -9,16 +9,11 @@ class ProcessSyncOrderService():
 
     def __init__(self, sync_order_data):
 
-        sync_orders = sync_order_data#['message']['data']
-        # try:
-        #     sync_orders = json.loads(base64.b64decode(sync_orders).decode())
-        # except:
-        #     sync_orders = json.loads(base64.b64decode(sync_orders).decode())
+        sync_orders = sync_order_data['message']['data']
+        sync_orders = json.loads(base64.b64decode(sync_orders).decode())
         print(sync_orders)
         self.store = sync_orders['store']
-        # print(self.store)
         self.items = sync_orders['items']
-        print(self.items)
 
     def run(self):
         for orders in self.items:
