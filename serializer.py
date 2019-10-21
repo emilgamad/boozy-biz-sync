@@ -2,7 +2,7 @@
 import config
 import json
 import manager
-
+import traceback
 
 def biz_store_refund_serializer(refund_data):
     print(refund_data)
@@ -12,17 +12,22 @@ def biz_store_refund_serializer(refund_data):
     try:
         order =  manager.biz_store_get_order_by_id(biz_order_id)
     except Exception as e:
-        print("Order has no note attribute location id")
-        print(str(e))
+        print(traceback.format_exc())
         return None
     location = order['note_attributes']
-    location_id = config.BIZ_STORE_QC_HUB
-    try:
-        for elem in location:
-            if elem['name'] == 'location_id':
-                location_id = elem['value']
-    except:
-        print("note_attributes not found defaulting to makati")
+    location_id = refund_data['refund_line_items'][0]['location_id']
+    # try:
+    #     for elem in location:
+    #         if elem['name'] == 'location_id':
+    #             location_id = elem['value']
+    # except:
+    #     print("note_attributes not found defaulting to makati")
+    #     note_location = order['note']
+    #     for loc in config.BIZ_LOCATIONS_LIST:
+    #         if note_location.lower() in loc.lower():
+    #             location_id = config.BIZ_LOCATIONS_LIST[loc]
+
+    print("biz_store_refund_serializer {}".format(location_id))
     items = refund_data['refund_line_items']
     for item in items:
         order_items.append({
@@ -100,18 +105,25 @@ def biz_sync_order_serializer(order_data):
     except KeyError:
         order = order_data
     variant_id_list = order['line_items']
+    try:
+        note_location = order_data['note']
+        for loc in config.BIZ_LOCATIONS_LIST:
+            if note_location.lower() in loc.lower():
+                location_id = config.BIZ_LOCATIONS_LIST[loc]
+    except:
+        location_id = config.BIZ_STORE_MAKATI_HUB
     for item in variant_id_list:
         sync_details = {}
         title = item['title']
         adjustment = item['quantity']
-        location_id = config.BIZ_STORE_MAKATI_HUB
+        location_id = location_id
         try:
             for elem in item['note_attributes']:
                 if elem['name'] == 'location_id':
                     location_id = elem['value']
         except Exception as e:
             print("Order has no note attribute location id")
-            print(str(e))
+            print("location_id has defaulted to location_id {}".format(location_id))
         order_items.append({"product": title,
                             "quantity": adjustment,
                             "location_id": location_id})
@@ -174,9 +186,10 @@ def get_main_location_from_biz_location_id(location_id):
     for elem in config.BIZ_LOCATIONS_LIST:
         if config.BIZ_LOCATIONS_LIST[elem] == location_id:
             biz_store_location = elem
+    print(biz_store_location)
     if biz_store_location == "BIZ_STORE_MAKATI_HUB":
         return "MAIN_STORE_MAKATI_HUB"
     if biz_store_location == "BIZ_STORE_QC_HUB":
         return "MAIN_STORE_QC_HUB"
-    if biz_store_location == "BIZ_STORE_ALABABG_HUB":
-        return "BIZ_STORE_ALABANG_HUB"
+    if biz_store_location == "BIZ_STORE_ALABANG_HUB":
+        return "MAIN_STORE_ALABANG_HUB"

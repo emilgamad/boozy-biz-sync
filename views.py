@@ -106,10 +106,8 @@ class SyncOrderView(Resource):
         sync_order_data = request.get_json()
         print(sync_order_data)
         try:
-            process_sync_order_service = ProcessSyncOrderService(sync_order_data).run()
+            ProcessSyncOrderService(sync_order_data).run()
         except:
             print(traceback.format_exc())
             return Response(status=200)
-        if process_sync_order_service is None:
-            return Response(status=200)
-        return process_sync_order_service
+        return Response(status=200)
