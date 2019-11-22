@@ -16,15 +16,16 @@ def main_store_get_product_by_id(product_id):
     return None
 
 def main_store_get_product_by_title(product_title):
-    print(product_title)
-    url = "{}products.json?title={}".format(
+    url = "{}products.json?handle={}".format(
         config.MAIN_STORE_DOMAIN,
         product_title)
-    print(url)
+    print("Main Store", url)
     response = requests.get(url=url)
+    print(response.text)
     if response.status_code == 200:
         product = json.loads(response.text)
-        return product['products'][0]
+        if product['products']:
+            return product['products']
     return None
 
 def main_store_get_variant_by_id(variant_id):
@@ -61,15 +62,16 @@ def biz_store_get_product_by_id(product_id):
     return None
 
 def biz_store_get_product_by_title(product_title):
-    print(product_title)
-    url = "{}products.json?title={}".format(
+    url = "{}products.json?handle={}".format(
         config.BIZ_STORE_DOMAIN,
         product_title)
-    print(url)
+    print("Biz Store", url)
     response = requests.get(url=url)
+    print(response.text)
     if response.status_code == 200:
         product = json.loads(response.text)
-        return product['products']
+        if product['products']:
+            return product['products']
     return None
 
 def biz_store_get_variant_by_id(variant_id):

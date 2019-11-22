@@ -4,6 +4,7 @@ import store
 import manager
 import serializer
 import base64
+import traceback
 
 class ProcessSyncOrderService():
 
@@ -14,28 +15,28 @@ class ProcessSyncOrderService():
         print(sync_orders)
         self.store = sync_orders['store']
         self.items = sync_orders['items']
-
+        print(self.store)
     def run(self):
         for orders in self.items:
-            print(orders)
             product_title = orders['product']
             if self.store == 'Sync to Biz':
                 biz_store_product = manager.biz_store_get_product_by_title(
                         product_title)
-                if len(biz_store_product) == 0:
+                if biz_store_product is None:
+                    print(product_title, "does not exist")
                     continue
                 product = manager.main_store_get_product_by_title(product_title)
                 product_inventory_item_id = product['variants'][0]['inventory_item_id']
+                print("asdasdasdasd", biz_store_product)
                 biz_store_inventory_item_id =  biz_store_product[0]['variants'][0]['inventory_item_id']
-                print(biz_store_inventory_item_id)
                 try:
                     product_item_levels = manager.main_store_get_item_levels_by_id(product_inventory_item_id)
                     serialized_product_item_levels = serializer.main_store_serialize_item_level(product_item_levels)
                     biz_item_levels = manager.biz_store_get_item_levels_by_id(biz_store_inventory_item_id)
                     serialized_biz_item_levels = serializer.biz_store_serialize_item_level(biz_item_levels)
-                except Exception as e:
+                except Exception:
+                    print(traceback.format_exc())
                     print("Error in getting item levels from main store")
-                    print(str(e))
                     return None
                 print(serialized_product_item_levels)
                 print(serialized_biz_item_levels)

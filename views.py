@@ -104,7 +104,6 @@ class SyncOrderView(Resource):
     @cors.crossdomain(origin='*')
     def post(self):
         sync_order_data = request.get_json()
-        print(sync_order_data)
         try:
             ProcessSyncOrderService(sync_order_data).run()
         except:

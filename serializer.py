@@ -90,7 +90,7 @@ def main_sync_order_serializer(order_data):
             print("Error in getting product {}".format(product_id))
             print(str(e))
             return None
-        order_items.append({"product": product['title']})
+        order_items.append({"product": product['handle']})
     sync_order['items'] = order_items
     sync_order['store'] = "Sync to Biz"
     return json.dumps(sync_order)
@@ -109,14 +109,13 @@ def biz_sync_order_serializer(order_data):
         note_location = order_data['note']
         for loc in config.BIZ_LOCATIONS_LIST:
             if note_location.lower() in loc.lower():
-                location_id = config.BIZ_LOCATIONS_LIST[loc]
+                order_location_id = config.BIZ_LOCATIONS_LIST[loc]
     except:
-        location_id = config.BIZ_STORE_MAKATI_HUB
+        order_location_id = config.BIZ_STORE_MAKATI_HUB
     for item in variant_id_list:
-        sync_details = {}
-        title = item['title']
+        title = item['handle']
         adjustment = item['quantity']
-        location_id = location_id
+        location_id = order_location_id
         try:
             for elem in item['note_attributes']:
                 if elem['name'] == 'location_id':
