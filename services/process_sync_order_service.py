@@ -22,11 +22,13 @@ class ProcessSyncOrderService():
             if self.store == 'Sync to Biz':
                 biz_store_product = manager.biz_store_get_product_by_title(
                         product_title)
+                print("Biz Product", biz_store_product)
                 if biz_store_product is None:
                     print(product_title, "does not exist")
                     continue
                 product = manager.main_store_get_product_by_title(product_title)
-                product_inventory_item_id = product['variants'][0]['inventory_item_id']
+                print("Product", product)
+                product_inventory_item_id = product[0]['variants'][0]['inventory_item_id']
                 print("asdasdasdasd", biz_store_product)
                 biz_store_inventory_item_id =  biz_store_product[0]['variants'][0]['inventory_item_id']
                 try:
@@ -52,6 +54,8 @@ class ProcessSyncOrderService():
                 print("Biz Store Synced")
 
             elif self.store == 'Sync to Main':
+                print(orders)
+                print(orders['product'])
                 product_title = orders['product']
                 adjustment = orders['quantity']
                 location_id = orders['location_id']
@@ -61,7 +65,7 @@ class ProcessSyncOrderService():
                 if len(main_store_product) == 0:
                     continue
 
-                main_store_inventory_item_id =  main_store_product['variants'][0]['inventory_item_id']
+                main_store_inventory_item_id =  main_store_product[0]['variants'][0]['inventory_item_id']
 
                 response = store.main_store_adjust_item_level(
                         main_store_inventory_item_id,

@@ -16,22 +16,12 @@ def biz_store_refund_serializer(refund_data):
         return None
     location = order['note_attributes']
     location_id = refund_data['refund_line_items'][0]['location_id']
-    # try:
-    #     for elem in location:
-    #         if elem['name'] == 'location_id':
-    #             location_id = elem['value']
-    # except:
-    #     print("note_attributes not found defaulting to makati")
-    #     note_location = order['note']
-    #     for loc in config.BIZ_LOCATIONS_LIST:
-    #         if note_location.lower() in loc.lower():
-    #             location_id = config.BIZ_LOCATIONS_LIST[loc]
-
     print("biz_store_refund_serializer {}".format(location_id))
     items = refund_data['refund_line_items']
     for item in items:
+        product = manager.main_store_get_product_by_id(item['line_item']['product_id'])
         order_items.append({
-           "product": item['line_item']['title'],
+           "product": product['handle'],
            "quantity": -(item['line_item']['quantity']),
            "location_id": location_id})
     sync_order['items'] = order_items
@@ -46,7 +36,8 @@ def main_store_refund_serializer(refund_data):
     items = refund_data['refund_line_items']
     for item in items:
         print(item)
-        title = item['line_item']['title']
+        product = manager.main_store_get_product_by_id(item['line_item']['product_id'])
+        title = product['handle']
         order_items.append({'product': title})
     sync_order['items'] = order_items
     sync_order['store'] = "Sync to Biz"
@@ -105,15 +96,19 @@ def biz_sync_order_serializer(order_data):
     except KeyError:
         order = order_data
     variant_id_list = order['line_items']
-    try:
-        note_location = order_data['note']
-        for loc in config.BIZ_LOCATIONS_LIST:
-            if note_location.lower() in loc.lower():
-                order_location_id = config.BIZ_LOCATIONS_LIST[loc]
-    except:
+    # Default QC Hub
+    order_location_id = config.BIZ_STORE_QC_HUB
+    #
+    note_location = order_data['note'].lower()
+    if note_location == "makati":
         order_location_id = config.BIZ_STORE_MAKATI_HUB
+    elif note_location == "quezon city":
+        order_location_id = config.BIZ_STORE_QC_HUB
+    elif note_location == "alabang":
+        order_location_id = config.BIZ_STORE_ALABANG_HUB
     for item in variant_id_list:
-        title = item['handle']
+        product = manager.biz_store_get_product_by_id(item['product_id'])
+        title = product['handle']
         adjustment = item['quantity']
         location_id = order_location_id
         try:
@@ -122,7 +117,7 @@ def biz_sync_order_serializer(order_data):
                     location_id = elem['value']
         except Exception as e:
             print("Order has no note attribute location id")
-            print("location_id has defaulted to location_id {}".format(location_id))
+            print("location_id used in note to location_id {}".format(location_id))
         order_items.append({"product": title,
                             "quantity": adjustment,
                             "location_id": location_id})
