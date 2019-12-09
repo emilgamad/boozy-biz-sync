@@ -24,7 +24,9 @@ def biz_store_set_item_level(biz_store_inventory_item_id, serialized_product_ite
             "location_id": config.BIZ_LOCATIONS_LIST['BIZ_STORE_MAKATI_HUB'],
             "available": serialized_product_item_levels['MAIN_STORE_MAKATI_HUB']
         }
+        print(payload)
         response = requests.post(url=url, json=payload)
+        print(response.text)
         time.sleep(1)
     except Exception as e:
         print("Error in setting BIZ_STORE_MAKATI_HUB ")
@@ -36,7 +38,9 @@ def biz_store_set_item_level(biz_store_inventory_item_id, serialized_product_ite
             "location_id": config.BIZ_LOCATIONS_LIST['BIZ_STORE_QC_HUB'],
             "available": serialized_product_item_levels['MAIN_STORE_QC_HUB']
         }
+        print(payload)
         response = requests.post(url=url, json=payload)
+        print(response.text)
         time.sleep(1)
     except Exception as e:
         print("Error in setting BIZ_STORE_QC_HUB ")
@@ -48,7 +52,9 @@ def biz_store_set_item_level(biz_store_inventory_item_id, serialized_product_ite
             "location_id": config.BIZ_LOCATIONS_LIST['BIZ_STORE_ALABANG_HUB'],
             "available": serialized_product_item_levels['MAIN_STORE_ALABANG_HUB']
         }
+        print(payload)
         response = requests.post(url=url, json=payload)
+        print(response.text)
         time.sleep(1)
     except Exception as e:
         print("Error in setting BIZ_STORE_ALABANG_HUB ")

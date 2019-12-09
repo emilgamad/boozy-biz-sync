@@ -4,6 +4,13 @@ import json
 import manager
 import traceback
 
+def main_to_biz_inventory_level_serializer(inventory_levels):
+    serialized_inventory_levels = []
+    for inv in inventory_levels:
+        serialized_inventory_levels.append(
+            {"location_id": inv['location_id'], "quantity": inv['available']})
+    return serialized_inventory_levels
+
 def biz_store_refund_serializer(refund_data):
     print(refund_data)
     sync_order = {}

@@ -6,6 +6,7 @@ from flask_restful import Resource, reqparse
 from flask_restful.utils import cors
 from services.google_publish_message_service import GooglePublishMessageService
 from services.process_sync_order_service import ProcessSyncOrderService
+from services.sync_main_store_handles_to_biz_store_service import SyncMainStoreHandlesToBizStoreService
 import serializer
 
 
@@ -109,4 +110,11 @@ class SyncOrderView(Resource):
         except:
             print(traceback.format_exc())
             return Response(status=200)
+        return Response(status=200)
+
+class SyncMainStoreHandlesToBizStoreView(Resource):
+    """Sync main store items to biz store items"""
+    @cors.crossdomain(origin='*')
+    def put(self):
+        SyncMainStoreHandlesToBizStoreService().run()
         return Response(status=200)

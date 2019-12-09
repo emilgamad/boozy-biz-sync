@@ -3,7 +3,7 @@ import os
 
 PROJECT_NAME = str(os.getenv('GOOGLE_CLOUD_PROJECT'))
 
-if "bzy-biz-sync" in PROJECT_NAME:
+if "bzy-biz-sync" in PROJECT_NAME or PROJECT_NAME == "None":
 
     MAIN_STORE = [
         {"API_KEY": "f3ec4f3a98c7f27aff8d470053d6242e"},
