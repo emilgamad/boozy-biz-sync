@@ -26,7 +26,7 @@ def biz_store_refund_serializer(refund_data):
     print("biz_store_refund_serializer {}".format(location_id))
     items = refund_data['refund_line_items']
     for item in items:
-        product = manager.main_store_get_product_by_id(item['line_item']['product_id'])
+        product = manager.biz_store_get_product_by_id(item['line_item']['product_id'])
         order_items.append({
            "product": product['handle'],
            "quantity": -(item['line_item']['quantity']),

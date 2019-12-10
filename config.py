@@ -72,6 +72,4 @@ FIREBASE_CONFIG = {
 FIREBASE_ADMIN = "emil.gamad@boozy.ph"
 FIREBASE_PASSWORD = "boozy-biz-sync-staging"
 
-
-
 GCP_SUB_NAME = 'projects/bzy-biz-sync-stg/subscriptions/testsub'
