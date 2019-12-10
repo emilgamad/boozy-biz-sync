@@ -21,7 +21,7 @@ def biz_store_refund_serializer(refund_data):
     except Exception as e:
         print(traceback.format_exc())
         return None
-    location = order['note_attributes']
+    # location = order['note_attributes']
     location_id = refund_data['refund_line_items'][0]['location_id']
     print("biz_store_refund_serializer {}".format(location_id))
     items = refund_data['refund_line_items']
@@ -88,6 +88,8 @@ def main_sync_order_serializer(order_data):
             print("Error in getting product {}".format(product_id))
             print(str(e))
             return None
+        if product is None:
+            return None
         order_items.append({"product": product['handle']})
     sync_order['items'] = order_items
     sync_order['store'] = "Sync to Biz"
@@ -106,15 +108,22 @@ def biz_sync_order_serializer(order_data):
     # Default QC Hub
     order_location_id = config.BIZ_STORE_QC_HUB
     #
-    note_location = order_data['note'].lower()
+    note_location = order_data.get('note', None)
+    if note_location is not None:
+        note_location = note_location.lower()
     if note_location == "makati":
         order_location_id = config.BIZ_STORE_MAKATI_HUB
     elif note_location == "quezon city":
         order_location_id = config.BIZ_STORE_QC_HUB
     elif note_location == "alabang":
         order_location_id = config.BIZ_STORE_ALABANG_HUB
+    else:
+        print("Note Location Not Found Defaulting To QC Hub")
+        order_location_id = config.BIZ_STORE_QC_HUB
     for item in variant_id_list:
         product = manager.biz_store_get_product_by_id(item['product_id'])
+        if product is None:
+            return None
         title = product['handle']
         adjustment = item['quantity']
         location_id = order_location_id
