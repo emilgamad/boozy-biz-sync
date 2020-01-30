@@ -3,17 +3,26 @@ import requests
 import config
 import time
 import serializer
+import json
+
+def biz_store_update_product(product):
+    product_id = product['product']['id']
+    url = "{}products/{}.json".format(config.BIZ_STORE_DOMAIN, product_id)
+    print("PUT", url)
+    response = requests.put(url=url, json=product)
+    if response.status_code == 200:
+        return "Updated Biz Store Product ID "+str(json.loads(response.text)['product']['id'])
+    else:
+        return response.text
 
 def biz_store_create_product(product):
-    biz_store_product_id = 0
-    biz_store_product = serializer.remove_all_ids_from_product(product)
-
     url = "{}products.json".format(config.BIZ_STORE_DOMAIN)
-    print(url)
-    response = requests.post(url=url, json=biz_store_product)
+    response = requests.post(url=url, json=product)
     if response.status_code == 200:
-        biz_store_product_id = response['product']['id']
-    return biz_store_product_id
+        return "Created Biz Store Product ID "+str(json.loads(response.text)['products']['id'])
+    else:
+        return json.loads(response.text)
+
 
 def biz_store_set_item_level(biz_store_inventory_item_id, serialized_product_item_levels):
     url = "{}inventory_levels/set.json".format(config.BIZ_STORE_DOMAIN)
@@ -27,8 +36,9 @@ def biz_store_set_item_level(biz_store_inventory_item_id, serialized_product_ite
         print(payload)
         response = requests.post(url=url, json=payload)
         print(response.text)
-        time.sleep(1)
     except Exception as e:
+        time.sleep(5)
+        response = requests.post(url=url, json=payload)
         print("Error in setting BIZ_STORE_MAKATI_HUB ")
         print(str(e))
 
@@ -41,8 +51,9 @@ def biz_store_set_item_level(biz_store_inventory_item_id, serialized_product_ite
         print(payload)
         response = requests.post(url=url, json=payload)
         print(response.text)
-        time.sleep(1)
     except Exception as e:
+        time.sleep(5)
+        response = requests.post(url=url, json=payload)
         print("Error in setting BIZ_STORE_QC_HUB ")
         print(str(e))
 
@@ -55,12 +66,14 @@ def biz_store_set_item_level(biz_store_inventory_item_id, serialized_product_ite
         print(payload)
         response = requests.post(url=url, json=payload)
         print(response.text)
-        time.sleep(1)
     except Exception as e:
+        time.sleep(5)
+        response = requests.post(url=url, json=payload)
         print("Error in setting BIZ_STORE_ALABANG_HUB ")
         print(str(e))
 
-    return response
+    return "Finished setting up inventory item levels"
+
 
 def main_store_set_item_level(main_store_inventory_item_id, serialized_product_item_levels):
     url = "{}inventory_levels/set.json".format(config.MAIN_STORE_DOMAIN)
@@ -102,6 +115,7 @@ def main_store_set_item_level(main_store_inventory_item_id, serialized_product_i
         print(str(e))
 
     return response
+
 
 def main_store_adjust_item_level(
         main_store_inventory_item_id,

@@ -4,17 +4,27 @@ import config
 import json
 import math
 
-
-def main_store_get_product_by_handle(handle):
+def biz_store_get_product_by_handle(handle):
     """Gets products by handle"""
-    url = "{}products.json?handle={}".format(config.MAIN_STORE_DOMAIN, handle)
+    url = "{}products.json?handle={}".format(config.BIZ_STORE_DOMAIN, handle)
     response = requests.get(url)
     result = json.loads(response.text)
-    print(result['products'])
-    if len(result['products']) > 0:
+    if result is not None:
         return result['products']
     return None
 
+def main_store_get_product_by_handle(handle):
+    """Gets products by handle"""
+    print("main_store_get_product_by_handle", handle)
+    url = "{}products.json?handle={}".format(config.MAIN_STORE_DOMAIN, handle)
+    print(url)
+    response = requests.get(url)
+    result = json.loads(response.text)
+    print(result)
+    print("Main Store Product ID", result['products'][0]['id'])
+    if len(result['products']) > 0:
+        return result['products']
+    return None
 
 
 def biz_store_get_all_published_products():
@@ -94,6 +104,7 @@ def main_store_get_all_published_products():
             all_published_product_list.append(product)
     return all_published_product_list
 
+
 def main_store_get_product_by_id(product_id):
     url = "{}products/{}.json".format(
         config.MAIN_STORE_DOMAIN,
@@ -104,6 +115,7 @@ def main_store_get_product_by_id(product_id):
         product = json.loads(response.text)
         return product['product']
     return None
+
 
 def main_store_get_product_by_title(product_title):
     url = "{}products.json?handle={}".format(
@@ -118,6 +130,7 @@ def main_store_get_product_by_title(product_title):
             return product['products']
     return None
 
+
 def main_store_get_variant_by_id(variant_id):
     url = "{}variants/{}.json".format(
         config.MAIN_STORE_DOMAIN,
@@ -128,6 +141,7 @@ def main_store_get_variant_by_id(variant_id):
         variant = json.loads(response.text)
         return variant['variant']
     return None
+
 
 def main_store_get_item_levels_by_id(item_inventory_id):
     url = "{}inventory_levels.json?inventory_item_ids={}".format(
@@ -140,6 +154,7 @@ def main_store_get_item_levels_by_id(item_inventory_id):
         return item_levels['inventory_levels']
     return None
 
+
 def biz_store_get_product_by_id(product_id):
     url = "{}products/{}.json".format(
         config.BIZ_STORE_DOMAIN,
@@ -150,6 +165,7 @@ def biz_store_get_product_by_id(product_id):
         product = json.loads(response.text)
         return product['product']
     return None
+
 
 def biz_store_get_product_by_title(product_title):
     url = "{}products.json?handle={}".format(
@@ -164,6 +180,7 @@ def biz_store_get_product_by_title(product_title):
             return product['products']
     return None
 
+
 def biz_store_get_variant_by_id(variant_id):
     url = "{}variants/{}.json".format(
         config.BIZ_STORE_DOMAIN,
@@ -175,6 +192,7 @@ def biz_store_get_variant_by_id(variant_id):
         return variant['variant']
     return None
 
+
 def biz_store_get_item_levels_by_id(item_inventory_id):
     url = "{}inventory_levels.json?inventory_item_ids={}".format(
         config.BIZ_STORE_DOMAIN,
@@ -185,6 +203,7 @@ def biz_store_get_item_levels_by_id(item_inventory_id):
         item_levels = json.loads(response.text)
         return item_levels['inventory_levels']
     return None
+
 
 def biz_store_get_order_by_id(order_id):
     url = "{}orders/{}.json".format(

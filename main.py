@@ -33,5 +33,9 @@ api.add_resource(views.BizStoreRefundCreatedView, '/api/v1/refund/biz')
 # PUT Sync Main Store Handles to Biz Store
 api.add_resource(views.SyncMainStoreHandlesToBizStoreView, '/api/v1/sync/biz/hubs')
 
+# POST Main Store Product Create/Update Webhook
+api.add_resource(views.MainStoreProductCreateUpdateView, '/api/v1/sync/product/main')
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)

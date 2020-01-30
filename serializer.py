@@ -4,12 +4,113 @@ import json
 import manager
 import traceback
 
+
+def serialize_image(image):
+    image_data = {}
+    image_data["position"] = image.get("position", "None")
+    image_data["position"] = image.get("position", "None")
+    image_data["width"] = image.get("width", 0)
+    image_data["height"] = image.get("height", 0)
+    image_data["src"] = image.get("src", "None")
+    return image_data
+
+def serialize_option(options):
+    if options is None:
+        return None
+    list_of_options = []
+    for option in options:
+        option_data = {}
+        option_data["name"] = option.get("name", "No name")
+        option_data["position"] = option.get("position", 0)
+        option_data["values"] = option.get("values", "No values")
+        list_of_options.append(option_data)
+    return list_of_options
+
+
+def serialize_images(images):
+    if images is None:
+        return None
+    list_of_images = []
+    for image in images:
+        image_data = {}
+        image_data["position"] = image.get("position", 0)
+        image_data["alt"] = image.get("alt", "None")
+        image_data["width"] = image.get("width", 0)
+        image_data["height"] = image.get("height", 0)
+        image_data["src"] = image.get("src", "None")
+        list_of_images.append(image_data)
+    return list_of_images
+
+def serialize_variant(variants):
+    if variants is None:
+        return None
+    list_of_variants = []
+    for variant in variants:
+        variant_data = {}
+        variant_data["title"] = variant.get("title", "No title")
+        variant_data["price"] = variant.get("price", "No price")
+        variant_data["sku"] = variant.get("sku", "No sku")
+        variant_data["position"] = variant.get("position", 0)
+        variant_data["compare_at_price"] = variant.get("compare_at_price", 0)
+        variant_data["fulfillment_service"] = variant.get("fulfillment_service", "No fulfillment_service")
+        variant_data["inventory_management"] = variant.get("inventory_management", "No inventory_management")
+        variant_data["option1"] = variant.get("option1", "No option1")
+        variant_data["option2"] = variant.get("option2", "No option2")
+        variant_data["option3"] = variant.get("option3", "No option3")
+        variant_data["created_at"] = variant.get("created_at", None)
+        variant_data["updated_at"] = variant.get("updated_at", None)
+        variant_data["taxable"] = variant.get("taxable", False)
+        variant_data["barcode"] = variant.get("barcode", "No barcode")
+        variant_data["grams"] = variant.get("grams", 0)
+        variant_data["weight"] = variant.get("weight", 0.0)
+        variant_data["weight_unit"] = variant.get("weight_unit", "kg")
+        variant_data["inventory_quantity"] = variant.get("inventory_quantity", 0)
+        variant_data["old_inventory_quantity"] = variant.get("old_inventory_quantity", 0)
+        variant_data["tax_code"] = variant.get("tax_code", "")
+        variant_data["requires_shipping"] = variant.get("requires_shipping", False)
+        list_of_variants.append(variant_data)
+    return list_of_variants
+
+
+
+def biz_store_product_serializer(main_product):
+    create_biz_product = {}
+    create_biz_product["title"] = main_product.get("title", "No title")
+    create_biz_product["body_html"] = main_product.get("body_html", "No body_html")
+    create_biz_product["vendor"] = main_product.get("vendor", "No vendor")
+    create_biz_product["product_type"] = main_product.get("product_type", "No product_type")
+    create_biz_product["handle"] = main_product.get("handle", "No handle")
+    create_biz_product["published"] = True
+    create_biz_product["published_scope"] = main_product.get("published_scope", "No handle")
+
+    biz_store_tags = ["biz_product"]
+    biz_store_tags.extend(main_product.get("tags", "No Title").replace(" ", "").split(","))
+    create_biz_product["tags"] = biz_store_tags
+
+    serialized_variants = serialize_variant(main_product.get("variants", None))
+    create_biz_product["variants"] = serialized_variants
+
+    serialized_images = serialize_images(main_product.get("images", None))
+    create_biz_product["images"] = serialized_images
+
+    serialized_options = serialize_option(main_product.get("options", None))
+    create_biz_product["options"] = serialized_options
+
+    image = main_product.get("image", None)
+    if image is not None:
+        serialized_image = serialize_image(image)
+        create_biz_product["image"] = serialized_image
+
+    return create_biz_product
+
+
 def main_to_biz_inventory_level_serializer(inventory_levels):
     serialized_inventory_levels = []
     for inv in inventory_levels:
         serialized_inventory_levels.append(
             {"location_id": inv['location_id'], "quantity": inv['available']})
     return serialized_inventory_levels
+
 
 def biz_store_refund_serializer(refund_data):
     print(refund_data)
@@ -52,6 +153,8 @@ def main_store_refund_serializer(refund_data):
 
 
 def main_store_serialize_item_level(item_levels):
+    if item_levels is None:
+        return None
     serialized_item_levels = {}
     for item_level in item_levels:
         for location in config.MAIN_LOCATIONS_LIST:
@@ -61,6 +164,8 @@ def main_store_serialize_item_level(item_levels):
 
 
 def biz_store_serialize_item_level(item_levels):
+    if item_levels is None:
+        return None
     serialized_item_levels = {}
     for item_level in item_levels:
         for location in config.BIZ_LOCATIONS_LIST:

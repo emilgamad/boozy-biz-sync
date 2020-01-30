@@ -14,12 +14,10 @@ parser = reqparse.RequestParser()
 
 class Index(Resource):
     """Index View"""
-
     @cors.crossdomain(origin='*')
     def get(self):
-        import os
-        title = os.getenv('GOOGLE_PROJECT')
-        return "Hello World"
+        return jsonify("Project:Boozy Biz Sync, Hello:World")
+
 
 class APIIndex(Resource):
     """Index View"""
@@ -66,6 +64,7 @@ class BizStoreOrderCreatedView(Resource):
         return Response(status=200)
         # return serialized_order
 
+
 class MainStoreRefundCreatedView(Resource):
     """Main Store Refund Created View"""
     @cors.crossdomain(origin='*')
@@ -82,6 +81,7 @@ class MainStoreRefundCreatedView(Resource):
             return Response(status=200)
         GooglePublishMessageService(serialized_refund).run()
         return Response(status=200)
+
 
 class BizStoreRefundCreatedView(Resource):
     """Biz Store Refund Created View"""
@@ -100,6 +100,7 @@ class BizStoreRefundCreatedView(Resource):
         GooglePublishMessageService(serialized_order).run()
         return Response(status=200)
 
+
 class SyncOrderView(Resource):
     """Process received sync details"""
     @cors.crossdomain(origin='*')
@@ -112,9 +113,25 @@ class SyncOrderView(Resource):
             return Response(status=200)
         return Response(status=200)
 
+
 class SyncMainStoreHandlesToBizStoreView(Resource):
     """Sync main store items to biz store items"""
     @cors.crossdomain(origin='*')
     def put(self):
         SyncMainStoreHandlesToBizStoreService().run()
         return Response(status=200)
+
+
+class MainStoreProductCreateUpdateView(Resource):
+    """Main Store Order Created View"""
+    @cors.crossdomain(origin='*')
+    def post(self):
+        product_data = request.get_json()
+        print("Main Store Product Created View")
+        tags = product_data['tags']
+        if "biz_product" in tags:
+            product_data["store"] = "CreateUpdate to Biz"
+            print("Received:", product_data)
+            GooglePublishMessageService(json.dumps(product_data)).run()
+        return Response(status=200)
+        # return serialized_order
