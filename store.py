@@ -5,6 +5,17 @@ import time
 import serializer
 import json
 
+
+def biz_store_delete_item(biz_store_product_id):
+    url = "{}products/{}.json".format(config.BIZ_STORE_DOMAIN, biz_store_product_id)
+    print("Deleting", biz_store_product_id)
+    response = requests.delete(url)
+    if response.status_code == 200:
+        return "Deleted {}".format(biz_store_product_id)
+    else:
+        return "Failed to delete {}".format(biz_store_product_id)
+
+
 def biz_store_update_product(product):
     product_id = product['product']['id']
     url = "{}products/{}.json".format(config.BIZ_STORE_DOMAIN, product_id)
@@ -14,6 +25,7 @@ def biz_store_update_product(product):
         return "Updated Biz Store Product ID "+str(json.loads(response.text)['product']['id'])
     else:
         return response.text
+
 
 def biz_store_create_product(product):
     url = "{}products.json".format(config.BIZ_STORE_DOMAIN)

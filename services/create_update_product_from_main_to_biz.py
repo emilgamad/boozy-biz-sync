@@ -32,8 +32,13 @@ class CreateUpdateProductFromMainToBiz():
                 serialized_product = {}
                 serialized_product["product"] = serializer.biz_store_product_serializer(main_store_product[0])
                 biz_product = store.biz_store_create_product(serialized_product)
-                print(biz_product)
-                biz_store_inventory_item_id = biz_product['product']['variants'][0]['inventory_item_id']
+                # print(biz_product)
+                time.sleep(5)
+                try:
+                    biz_store_inventory_item_id = biz_product['product']['variants'][0]['inventory_item_id']
+                except:
+                    biz_product = manager.biz_store_get_product_by_handle(handle)
+                    biz_store_inventory_item_id = biz_product['product']['variants'][0]['inventory_item_id']
             # updating item_levels
             main_store_inventory_item_id = main_store_product[0]['variants'][0]['inventory_item_id']
             main_store_inventory_levels = manager.main_store_get_item_levels_by_id(main_store_inventory_item_id)

@@ -36,6 +36,9 @@ api.add_resource(views.SyncMainStoreHandlesToBizStoreView, '/api/v1/sync/biz/hub
 # POST Main Store Product Create/Update Webhook
 api.add_resource(views.MainStoreProductCreateUpdateView, '/api/v1/sync/product/main')
 
+# POST Main Store Product Delete Webhook
+# api.add_resource(views.DeleteProductCreateUpdateView, '/api/v1/delete/product/main')
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)

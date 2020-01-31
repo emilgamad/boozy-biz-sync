@@ -6,6 +6,7 @@ import serializer
 import base64
 import traceback
 from services.create_update_product_from_main_to_biz import CreateUpdateProductFromMainToBiz
+from services.delete_product_from_main_to_biz import DeleteProductFromMainToBiz
 
 class ProcessSyncOrderService():
 
@@ -20,7 +21,11 @@ class ProcessSyncOrderService():
         if self.store != "CreateUpdate to Biz":
             self.items = self.sync_orders.get('items', None)
     def run(self):
-        if self.items is None:
+        if self.store == "Delete to Biz":
+            main_store_product_id = self.sync_orders.get('handle', None)
+            if main_store_product_id is not None:
+                DeleteProductFromMainToBiz(main_store_product_id).run()
+        elif self.store == "CreateUpdate to Biz":
             handle = self.sync_orders.get('handle', None)
             if handle is not None:
                 CreateUpdateProductFromMainToBiz([handle]).run()

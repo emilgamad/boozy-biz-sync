@@ -135,3 +135,14 @@ class MainStoreProductCreateUpdateView(Resource):
             GooglePublishMessageService(json.dumps(product_data)).run()
         return Response(status=200)
         # return serialized_order
+
+class DeleteProductCreateUpdateView(Resource):
+    """Main Store Order Delete View"""
+    @cors.crossdomain(origin='*')
+    def post(self):
+        product_data = request.get_json()
+        print("Main Store Product Created View")
+        product_data["store"] = "Delete to Biz"
+        print("Received:", product_data)
+        GooglePublishMessageService(json.dumps(product_data)).run()
+        return Response(status=200)
