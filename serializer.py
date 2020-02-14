@@ -48,7 +48,7 @@ def serialize_variant(variants):
     for variant in variants:
         variant_data = {}
         variant_data["title"] = variant.get("title", "No title")
-        variant_data["price"] = variant.get("price", "No price")
+        variant_data["price"] = 0 # Feb 14, 2020 New Product price must be zero variant.get("price", "No price")
         variant_data["sku"] = variant.get("sku", "No sku")
         variant_data["position"] = variant.get("position", 0)
         variant_data["compare_at_price"] = variant.get("compare_at_price", 0)
@@ -80,14 +80,14 @@ def biz_store_product_serializer(main_product):
     create_biz_product["vendor"] = main_product.get("vendor", "No vendor")
     create_biz_product["product_type"] = main_product.get("product_type", "No product_type")
     create_biz_product["handle"] = main_product.get("handle", "No handle")
-    create_biz_product["published"] = True
+    create_biz_product["published"] = False # Feb 14 2020 New created products should not be published on default
     create_biz_product["published_scope"] = main_product.get("published_scope", "No handle")
 
     biz_store_tags = ["biz_product"]
     biz_store_tags.extend(main_product.get("tags", "No Title").replace(" ", "").split(","))
     create_biz_product["tags"] = biz_store_tags
 
-    serialized_variants = serialize_variant(main_product.get("variants", None))
+    serialized_variants = serialize_variant(main_product.get("vari ants", None))
     create_biz_product["variants"] = serialized_variants
 
     serialized_images = serialize_images(main_product.get("images", None))
