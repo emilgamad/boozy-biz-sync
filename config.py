@@ -20,7 +20,8 @@ if "bzy-biz-sync" in PROJECT_NAME or PROJECT_NAME == "None":
     SECRETS = 'productionsecrets.json'
     GCP_TOPIC_NAME = "projects/bzy-biz-sync/topics/bzy-biz-sync-topic"
 
-else:# if PROJECT_NAME == "None" or :"boozy-biz-sync" in PROJECT_NAME:
+else:
+# if PROJECT_NAME == "None" or "boozy-biz-sync" in PROJECT_NAME:
     MAIN_STORE = [
         {"API_KEY": "8b2c2f515ff17743be71ae5b479297c9"},
         {"PASSWORD": "7ae645b889c0708b6747bb5dbd31e382"},

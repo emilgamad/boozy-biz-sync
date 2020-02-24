@@ -16,7 +16,7 @@ class Index(Resource):
     """Index View"""
     @cors.crossdomain(origin='*')
     def get(self):
-        return jsonify("Project:Boozy Biz Sync, Hello:World")
+        return jsonify({"Project":"Boozy Biz Sync API", "Hello":"World"})
 
 
 class APIIndex(Resource):
@@ -24,7 +24,7 @@ class APIIndex(Resource):
 
     @cors.crossdomain(origin='*')
     def get(self):
-        return "Boozy Biz Sync API"
+        return jsonify({"Project":"Boozy Biz Sync API", "Hello":"World"})
 
 
 class MainStoreOrderCreatedView(Resource):
@@ -128,7 +128,7 @@ class MainStoreProductCreateUpdateView(Resource):
     def post(self):
         product_data = request.get_json()
         print("Main Store Product Created View")
-        tags = product_data['tags']
+        tags = product_data.get('tags', None)
         if "biz_product" in tags:
             product_data["store"] = "CreateUpdate to Biz"
             print("Received:", product_data)

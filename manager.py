@@ -3,22 +3,30 @@ import requests
 import config
 import json
 import math
+import time
+
 
 def biz_store_get_product_by_handle(handle):
     """Gets products by handle"""
     url = "{}products.json?handle={}".format(config.BIZ_STORE_DOMAIN, handle)
-    response = requests.get(url)
+    try:
+        response = requests.get(url)
+    except:
+        time.sleep(10)
+        response = requests.get(url)
     result = json.loads(response.text)
-    if result is not None:
-        return result['products']
-    return None
+    return result.get('products', None)
 
 def main_store_get_product_by_handle(handle):
     """Gets products by handle"""
     print("main_store_get_product_by_handle", handle)
     url = "{}products.json?handle={}".format(config.MAIN_STORE_DOMAIN, handle)
     print(url)
-    response = requests.get(url)
+    try:
+        response = requests.get(url)
+    except:
+        time.sleep(10)
+        response = requests.get(url)
     result = json.loads(response.text)
     print(result)
     print("Main Store Product ID", result['products'][0]['id'])
@@ -32,7 +40,11 @@ def biz_store_get_all_published_products():
     count = 0
     all_product_list = []
     url = "{}products/count.json".format(config.BIZ_STORE_DOMAIN)
-    response = requests.get(url)
+    try:
+        response = requests.get(url)
+    except:
+        time.sleep(10)
+        response = requests.get(url)
     count_string = response.content.decode()
     print(count_string)
     count_json = json.loads(count_string)
@@ -71,7 +83,11 @@ def main_store_get_all_published_products():
     count = 0
     all_product_list = []
     url = "{}products/count.json".format(config.MAIN_STORE_DOMAIN)
-    response = requests.get(url)
+    try:
+        response = requests.get(url)
+    except:
+        time.sleep(10)
+        response = requests.get(url)
     count_string = response.content.decode()
     print(count_string)
     count_json = json.loads(count_string)
@@ -110,7 +126,11 @@ def main_store_get_product_by_id(product_id):
         config.MAIN_STORE_DOMAIN,
         product_id)
     print(url)
-    response = requests.get(url=url)
+    try:
+        response = requests.get(url)
+    except:
+        time.sleep(10)
+        response = requests.get(url)
     if response.status_code == 200:
         product = json.loads(response.text)
         return product['product']
@@ -122,7 +142,11 @@ def main_store_get_product_by_title(product_title):
         config.MAIN_STORE_DOMAIN,
         product_title)
     print("Main Store", url)
-    response = requests.get(url=url)
+    try:
+        response = requests.get(url)
+    except:
+        time.sleep(10)
+        response = requests.get(url)
     print(response.text)
     if response.status_code == 200:
         product = json.loads(response.text)
@@ -136,7 +160,11 @@ def main_store_get_variant_by_id(variant_id):
         config.MAIN_STORE_DOMAIN,
         variant_id)
     print(url)
-    response = requests.get(url=url)
+    try:
+        response = requests.get(url)
+    except:
+        time.sleep(10)
+        response = requests.get(url)
     if response.status_code == 200:
         variant = json.loads(response.text)
         return variant['variant']
@@ -148,7 +176,11 @@ def main_store_get_item_levels_by_id(item_inventory_id):
         config.MAIN_STORE_DOMAIN,
         item_inventory_id)
     print(url)
-    response = requests.get(url=url)
+    try:
+        response = requests.get(url)
+    except:
+        time.sleep(10)
+        response = requests.get(url)
     if response.status_code == 200:
         item_levels = json.loads(response.text)
         return item_levels['inventory_levels']
@@ -160,7 +192,11 @@ def biz_store_get_product_by_id(product_id):
         config.BIZ_STORE_DOMAIN,
         product_id)
     print(url)
-    response = requests.get(url=url)
+    try:
+        response = requests.get(url)
+    except:
+        time.sleep(10)
+        response = requests.get(url)
     if response.status_code == 200:
         product = json.loads(response.text)
         return product['product']
@@ -172,7 +208,11 @@ def biz_store_get_product_by_title(product_title):
         config.BIZ_STORE_DOMAIN,
         product_title)
     print("Biz Store", url)
-    response = requests.get(url=url)
+    try:
+        response = requests.get(url)
+    except:
+        time.sleep(10)
+        response = requests.get(url)
     print(response.text)
     if response.status_code == 200:
         product = json.loads(response.text)
@@ -186,7 +226,11 @@ def biz_store_get_variant_by_id(variant_id):
         config.BIZ_STORE_DOMAIN,
         variant_id)
     print(url)
-    response = requests.get(url=url)
+    try:
+        response = requests.get(url)
+    except:
+        time.sleep(10)
+        response = requests.get(url)
     if response.status_code == 200:
         variant = json.loads(response.text)
         return variant['variant']
@@ -198,7 +242,11 @@ def biz_store_get_item_levels_by_id(item_inventory_id):
         config.BIZ_STORE_DOMAIN,
         item_inventory_id)
     print(url)
-    response = requests.get(url=url)
+    try:
+        response = requests.get(url)
+    except:
+        time.sleep(10)
+        response = requests.get(url)
     if response.status_code == 200:
         item_levels = json.loads(response.text)
         return item_levels['inventory_levels']
@@ -210,7 +258,11 @@ def biz_store_get_order_by_id(order_id):
         config.BIZ_STORE_DOMAIN,
         order_id)
     print(url)
-    response = requests.get(url=url)
+    try:
+        response = requests.get(url)
+    except:
+        time.sleep(10)
+        response = requests.get(url)
     if response.status_code == 200:
         order = json.loads(response.text)
         return order['order']

@@ -69,7 +69,10 @@ class ProcessSyncOrderService():
                     main_store_product = manager.main_store_get_product_by_title(
                         product_title)
 
-                    if len(main_store_product) == 0:
+
+                    if main_store_product is None:
+                        continue
+                    elif len(main_store_product) == 0:
                         continue
 
                     main_store_inventory_item_id =  main_store_product[0]['variants'][0]['inventory_item_id']

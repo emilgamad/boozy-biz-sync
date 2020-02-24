@@ -145,7 +145,7 @@ def main_store_refund_serializer(refund_data):
     for item in items:
         print(item)
         product = manager.main_store_get_product_by_id(item['line_item']['product_id'])
-        title = product['handle']
+        title = product.get('handle', None)
         order_items.append({'product': title})
     sync_order['items'] = order_items
     sync_order['store'] = "Sync to Biz"
