@@ -41,14 +41,14 @@ def serialize_images(images):
         list_of_images.append(image_data)
     return list_of_images
 
-def serialize_variant(variants):
+def serialize_variant(variants, price):
     if variants is None:
         return None
     list_of_variants = []
     for variant in variants:
         variant_data = {}
         variant_data["title"] = variant.get("title", "No title")
-        variant_data["price"] = 0 # Feb 14, 2020 New Product price must be zero variant.get("price", "No price")
+        variant_data["price"] = price # Feb 14, 2020 New Product price must be zero variant.get("price", "No price")
         variant_data["sku"] = variant.get("sku", "No sku")
         variant_data["position"] = variant.get("position", 0)
         variant_data["compare_at_price"] = variant.get("compare_at_price", 0)
@@ -73,21 +73,22 @@ def serialize_variant(variants):
 
 
 
-def biz_store_product_serializer(main_product):
+def biz_store_product_serializer(main_product, price, update):
     create_biz_product = {}
     create_biz_product["title"] = main_product.get("title", "No title")
     create_biz_product["body_html"] = main_product.get("body_html", "No body_html")
     create_biz_product["vendor"] = main_product.get("vendor", "No vendor")
     create_biz_product["product_type"] = main_product.get("product_type", "No product_type")
     create_biz_product["handle"] = main_product.get("handle", "No handle")
-    create_biz_product["published"] = False # Feb 14 2020 New created products should not be published on default
+    if update is False:
+        create_biz_product["published"] = False
     create_biz_product["published_scope"] = main_product.get("published_scope", "No handle")
 
     biz_store_tags = ["biz_product"]
     biz_store_tags.extend(main_product.get("tags", "No Title").replace(" ", "").split(","))
     create_biz_product["tags"] = biz_store_tags
 
-    serialized_variants = serialize_variant(main_product.get("vari ants", None))
+    serialized_variants = serialize_variant(main_product.get("variants", None), price)
     create_biz_product["variants"] = serialized_variants
 
     serialized_images = serialize_images(main_product.get("images", None))
@@ -102,6 +103,10 @@ def biz_store_product_serializer(main_product):
         create_biz_product["image"] = serialized_image
 
     return create_biz_product
+
+
+# def main_store_product_serializer(main_product):
+#     return biz_store_product_serializer(main_product)
 
 
 def main_to_biz_inventory_level_serializer(inventory_levels):

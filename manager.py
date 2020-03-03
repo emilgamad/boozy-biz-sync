@@ -186,6 +186,21 @@ def main_store_get_item_levels_by_id(item_inventory_id):
         return item_levels['inventory_levels']
     return None
 
+def biz_store_get_item_levels_by_id(item_inventory_id):
+    url = "{}inventory_levels.json?inventory_item_ids={}".format(
+        config.BIZ_STORE_DOMAIN,
+        item_inventory_id)
+    print(url)
+    try:
+        response = requests.get(url)
+    except:
+        time.sleep(10)
+        response = requests.get(url)
+    if response.status_code == 200:
+        item_levels = json.loads(response.text)
+        return item_levels['inventory_levels']
+    return None
+
 
 def biz_store_get_product_by_id(product_id):
     url = "{}products/{}.json".format(

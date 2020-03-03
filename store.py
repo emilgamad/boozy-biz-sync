@@ -96,7 +96,9 @@ def main_store_set_item_level(main_store_inventory_item_id, serialized_product_i
             "location_id": config.MAIN_LOCATIONS_LIST['MAIN_STORE_MAKATI_HUB'],
             "available": serialized_product_item_levels['BIZ_STORE_MAKATI_HUB']
         }
+        print(payload)
         response = requests.post(url=url, json=payload)
+        print(response.text)
         time.sleep(1)
     except Exception as e:
         print("Error in setting BIZ_STORE_MAKATI_HUB ")
@@ -109,6 +111,7 @@ def main_store_set_item_level(main_store_inventory_item_id, serialized_product_i
             "available": serialized_product_item_levels['BIZ_STORE_QC_HUB']
         }
         response = requests.post(url=url, json=payload)
+        print(response.text)
         time.sleep(1)
     except Exception as e:
         print("Error in setting BIZ_STORE_QC_HUB ")
@@ -121,6 +124,7 @@ def main_store_set_item_level(main_store_inventory_item_id, serialized_product_i
             "available": serialized_product_item_levels['BIZ_STORE_ALABANG_HUB']
         }
         response = requests.post(url=url, json=payload)
+        print(response.text)
         time.sleep(1)
     except Exception as e:
         print("Error in setting BIZ_STORE_ALABANG_HUB ")

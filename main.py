@@ -15,26 +15,29 @@ api.add_resource(views.Index, '/')
 # Get (API index)
 api.add_resource(views.APIIndex, '/api/v1')
 
-# POST Main Store Order Creation
-api.add_resource(views.MainStoreOrderCreatedView, '/api/v1/order/main')
+# POST Main Store Product Create/Update Webhook
+api.add_resource(views.MainStoreProductCreateUpdateView, '/api/v1/sync/product/main')
 
-# POST Biz Store Order Creation
-api.add_resource(views.BizStoreOrderCreatedView, '/api/v1/order/biz')
+# POST Biz Store Product Create/Update Webhook
+api.add_resource(views.BizStoreProductCreateUpdateView, '/api/v1/sync/product/biz')
 
 # POST Process received sync info
 api.add_resource(views.SyncOrderView, '/api/v1/sync')
 
+# POST Main Store Order Creation
+# api.add_resource(views.MainStoreOrderCreatedView, '/api/v1/order/main')
+
+# POST Biz Store Order Creation
+# api.add_resource(views.BizStoreOrderCreatedView, '/api/v1/order/biz')
+
 # POST Main Store Refund Created
-api.add_resource(views.MainStoreRefundCreatedView, '/api/v1/refund/main')
+# api.add_resource(views.MainStoreRefundCreatedView, '/api/v1/refund/main')
 
 # POST Biz Store Refund Created
-api.add_resource(views.BizStoreRefundCreatedView, '/api/v1/refund/biz')
+# api.add_resource(views.BizStoreRefundCreatedView, '/api/v1/refund/biz')
 
 # PUT Sync Main Store Handles to Biz Store
-api.add_resource(views.SyncMainStoreHandlesToBizStoreView, '/api/v1/sync/biz/hubs')
-
-# POST Main Store Product Create/Update Webhook
-api.add_resource(views.MainStoreProductCreateUpdateView, '/api/v1/sync/product/main')
+# api.add_resource(views.SyncMainStoreHandlesToBizStoreView, '/api/v1/sync/biz/hubs')
 
 # POST Main Store Product Delete Webhook
 # api.add_resource(views.DeleteProductCreateUpdateView, '/api/v1/delete/product/main')

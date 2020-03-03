@@ -21,16 +21,23 @@ class CreateUpdateProductFromMainToBiz():
             main_store_product = manager.main_store_get_product_by_handle(handle)
             biz_product = manager.biz_store_get_product_by_handle(handle)
             if len(biz_product) > 0:
+                update = True
                 biz_store_product_id = biz_product[0]['id']
                 biz_store_inventory_item_id = biz_product[0]['variants'][0]['inventory_item_id']
                 serialized_product = {}
-                serialized_product["product"] = serializer.biz_store_product_serializer(biz_product[0])
+                price = biz_product[0]['variants'][0]['price']
+                if price == None:
+                    price = 0 # Feb 14, 2020 New Product price must be zero variant.get("price", "No price")
+                serialized_product["product"] = serializer.biz_store_product_serializer(main_store_product=main_store_product[0], price=price, update=update)
+                print("Serialized", serialized_product["product"])
                 serialized_product["product"]["id"] = biz_store_product_id
                 print(store.biz_store_update_product(serialized_product))
             # if handle does not exists in biz create product
             else:
+                update = False
+                price = 0
                 serialized_product = {}
-                serialized_product["product"] = serializer.biz_store_product_serializer(main_store_product[0])
+                serialized_product["product"] = serializer.biz_store_product_serializer(main_store_product=main_store_product[0], price=price, update=update)
                 biz_product = store.biz_store_create_product(serialized_product)
                 # print(biz_product)
                 time.sleep(5)
