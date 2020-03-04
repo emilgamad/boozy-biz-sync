@@ -30,7 +30,7 @@ gcloud app deploy
 
 ## API Specifications
 
-**Index** - https://github.com/boozy-ph/bzy-biz-sync.git | https://github.com/boozy-ph/bzy-biz-sync.git/api/v1
+**Index** - https://bzy-cities-ph.appspot.com | https://bzy-cities-ph.appspot.com/api/v1
 ----
 
 * **Method:**  `GET`
