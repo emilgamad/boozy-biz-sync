@@ -73,7 +73,8 @@ def serialize_variant(variants, price):
 
 
 
-def biz_store_product_serializer(main_product, price, update):
+def biz_store_product_serializer(unserialized_store_product, price, update):
+    main_product=unserialized_store_product
     create_biz_product = {}
     create_biz_product["title"] = main_product.get("title", "No title")
     create_biz_product["body_html"] = main_product.get("body_html", "No body_html")
