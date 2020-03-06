@@ -30,7 +30,7 @@ gcloud app deploy
 
 ## API Specifications
 
-**Index** - https://bzy-cities-ph.appspot.com | https://bzy-cities-ph.appspot.com/api/v1
+**Index** - https://bzy-biz-sync.appspot.com/ | https://bzy-biz-sync.appspot.com/api/v1
 ----
 
 * **Method:**  `GET`
@@ -57,131 +57,83 @@ gcloud app deploy
 
      _Index page of API_
 
-**Renew Firebase Access Token** - https://bzy-cities-ph.appspot.com/api/v1/pyrebase/renew
-  ----
+ **Main Store Product Update Create Webhook** - https://bzy-biz-sync.appspot.com/api/v1/sync/product/main
+ ----
 
-  * **Method:**  `GET`
+ * **Method:**  `POST`
 
-  *  **URL Params**
+ *  **URL Params**
 
-     * **Required:** `None`
+    * **Required:** `None`
 
-     * **Optional:**`None`
+    * **Optional:**`None`
 
-  * **Data Params:**
-      * `None`
+ * **Data Params:**
+     * `None`
 
-  * **Success Response:**
+ * **Success Response:**
 
-    * **Code:** 200
+   * **Code:** 200
 
-  * **Error Response:**
+ * **Error Response:**
 
-     * Errors always return 200 but are descriptive. Check GCP stacklogger for more details.
+    * Errors always return 200 but are descriptive. Check GCP stacklogger for more details.
 
-  * **Sample Call:**
+ * **Notes:**
 
-    https://bzy-cities-ph.appspot.com/api/v1/autocomplete?city=Makati
+      _The main store product update and create webhooks trigger this to sync to biz site_
 
-  * **Notes:**
-
-    _Endpoint to trigger the renewal of the firebase access token. This is triggered by a cronjob every 55 minutes_
-
-**Sync All Bundles** - https://bzy-cities-ph.appspot.com/api/v1/bundles/sync
+**Biz Store Product Update Create Webhook** - https://bzy-biz-sync.appspot.com/api/v1/sync/product/biz
 ----
 
-  * **Method:**  `POST`
+* **Method:**  `POST`
 
-  *  **URL Params**
+*  **URL Params**
 
-     * **Required:** `None`
+   * **Required:** `None`
 
-     * **Optional:**`None`
+   * **Optional:**`None`
 
-  * **Data Params:**
-      * `None`
+* **Data Params:**
+    * `None`
 
-  * **Success Response:**
+* **Success Response:**
 
-    * **Code:** 200
-    * **Content:*** {"sync_status_id": bundle_id}
+  * **Code:** 200
 
-  * **Error Response:**
+* **Error Response:**
 
-     * Errors always return 200 but are descriptive. Check GCP stacklogger for more details.
+   * Errors always return 200 but are descriptive. Check GCP stacklogger for more details.
 
-  * **Sample Call:**
+* **Notes:**
 
-    https://bzy-cities-ph.appspot.com/api/v1/bundles/sync
+     _The biz store product update and create webhooks trigger this to sync to biz site_
 
-  * **Notes:**
-
-    _Endpoint to trigger the process to sync all the bundles in the boozy-bundle firestore_
-
-**Publish Sync Bundles** - https://bzy-cities-ph.appspot.com/api/v1/bundles/async
+**GCP Sub Endpoint** - https://bzy-biz-sync.appspot.com/api/v1/sync
 ----
 
-  * **Method:**  `POST`
+* **Method:**  `POST`
 
-  *  **URL Params**
+*  **URL Params**
 
-     * **Required:** `None`
+  * **Required:** `None`
 
-     * **Optional:**`None`
+  * **Optional:**`None`
 
-  * **Data Params:**
-      * `List of Bundle IDs`
+* **Data Params:**
+   * `None`
 
-  * **Success Response:**
+* **Success Response:**
 
-    * **Code:** 200
-    * **Content:*** [List of ids]
+ * **Code:** 200
 
-  * **Error Response:**
+* **Error Response:**
 
-     * Errors always return 200 but are descriptive. Check GCP stacklogger for more details.
+  * Errors always return 200 but are descriptive. Check GCP stacklogger for more details.
 
-  * **Sample Call:**
+* **Notes:**
 
-    https://bzy-cities-ph.appspot.com/api/v1/bundles/sync
-
-    ```
-    payload: {[bundle_id_1, bundle_id_2, bundle_id_3]}
-    ```
-
-  * **Notes:**
-
-    _Endpoint to publish list of bundle ids to sync in firebase_
-
-**Process Sync Bundles** - https://bzy-cities-ph.appspot.com/api/v1/bundles/run
-----
-
-  * **Method:**  `POST`
-
-  *  **URL Params**
-
-     * **Required:** `None`
-
-     * **Optional:**`None`
-
-  * **Data Params:**
-      * `None`
-
-  * **Success Response:**
-
-    * **Code:** 200
-
-  * **Error Response:**
-
-     * Errors always return 200 but are descriptive. Check GCP stacklogger for more details.
-
-  * **Sample Call:**
-
-    https://bzy-cities-ph.appspot.com/api/v1/bundles/run
-
-  * **Notes:**
-
-    _Endpoint that receives published messages from GCP topic and syncs bundle ids_
+    _This receives the pushed messages from GCP topic_
 
 ## Built With
 

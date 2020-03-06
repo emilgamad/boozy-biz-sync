@@ -15,7 +15,7 @@ class CreateUpdateProductFromMainToBiz():
         counter = 1
         for handle in self.list_of_handles:
             # print("Getting product", handle)
-            # if counter >= 296:
+            # if counter >= 1071:
             print(counter, "/"+str(len(self.list_of_handles)))
             # if handle exists in biz update product
             main_store_product = manager.main_store_get_product_by_handle(handle)
@@ -31,7 +31,11 @@ class CreateUpdateProductFromMainToBiz():
                 serialized_product["product"] = serializer.biz_store_product_serializer(unserialized_store_product=main_store_product[0], price=price, update=update)
                 print("Serialized", serialized_product["product"])
                 serialized_product["product"]["id"] = biz_store_product_id
-                print(store.biz_store_update_product(serialized_product))
+                try:
+                    print(store.biz_store_update_product(serialized_product))
+                except:
+                    time.sleep(5)
+                    print(store.biz_store_update_product(serialized_product))
             # if handle does not exists in biz create product
             else:
                 update = False
